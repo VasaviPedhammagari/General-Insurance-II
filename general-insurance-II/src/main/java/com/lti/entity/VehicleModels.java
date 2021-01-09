@@ -13,6 +13,7 @@ public class VehicleModels {
 	private String manufacturer;
 	private String model;
 	private double price;
+	private String type;
 	
 	public int getId() {
 		return id;
@@ -37,6 +38,12 @@ public class VehicleModels {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }
