@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 public class Address {
 
 	@Id
-	private int id;
+	private int addressId;
 
 	private String landmark;
 	private String city;
@@ -20,11 +20,11 @@ public class Address {
 	private User user;
 
 	public int getId() {
-		return id;
+		return addressId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.addressId = id;
 	}
 
 	public String getLandmark() {
