@@ -11,7 +11,7 @@ public class Address {
 	@Id
 	private int addressId;
 
-	private String landmark;
+	private String addressLine;
 	private String city;
 	private int pin;
 	private String state;
@@ -28,11 +28,11 @@ public class Address {
 	}
 
 	public String getLandmark() {
-		return landmark;
+		return addressLine;
 	}
 
-	public void setLandmark(String landmark) {
-		this.landmark = landmark;
+	public void setLandmark(String addressLine) {
+		this.addressLine = addressLine;
 	}
 
 	public String getCity() {
