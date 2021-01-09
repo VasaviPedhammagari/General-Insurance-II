@@ -1,6 +1,7 @@
 package com.lti.entity;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -11,7 +12,9 @@ public class Address {
 	@Id
 	private int addressId;
 
-	private String landmark;
+	@Column(name = "address_line")
+	private String addressLine;
+	
 	private String city;
 	private int pin;
 	private String state;
@@ -23,16 +26,16 @@ public class Address {
 		return addressId;
 	}
 
-	public void setId(int id) {
-		this.addressId = id;
+	public void setId(int addressId) {
+		this.addressId = addressId;
 	}
 
-	public String getLandmark() {
-		return landmark;
+	public String getAddressLine() {
+		return addressLine;
 	}
 
-	public void setLandmark(String landmark) {
-		this.landmark = landmark;
+	public void setAddressLine(String addressLine) {
+		this.addressLine = addressLine;
 	}
 
 	public String getCity() {
