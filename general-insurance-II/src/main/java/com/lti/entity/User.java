@@ -38,7 +38,7 @@ public class User {
 	@JoinColumn(name = "address_id")
 	private Address address;
 
-	@OneToMany(mappedBy = "album",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
+	@OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
 	private List<MotorInsurance> insurances;
 	
 	public int getUserId() {
