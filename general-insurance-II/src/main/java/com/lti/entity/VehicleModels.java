@@ -5,21 +5,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "vehicle_model")
+@Table(name = "vehicle_models")
 public class VehicleModels {
 	
 	@Id
-	private int id;
+	private int model_id;
+	
 	private String manufacturer;
 	private String model;
 	private double price;
 	private String type;
 	
-	public int getId() {
-		return id;
+	public int getModel_id() {
+		return model_id;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setModel_id(int model_id) {
+		this.model_id = model_id;
 	}
 	public String getManufacturer() {
 		return manufacturer;
