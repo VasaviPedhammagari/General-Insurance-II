@@ -19,19 +19,19 @@ public class Address {
 	@OneToOne(mappedBy = "address", cascade = { CascadeType.MERGE, CascadeType.REMOVE })
 	private User user;
 
-	public int getId() {
+	public int getAddressId() {
 		return addressId;
 	}
 
-	public void setId(int id) {
-		this.addressId = id;
+	public void setAddressId(int addressId) {
+		this.addressId = addressId;
 	}
 
-	public String getLandmark() {
+	public String getAddressLine() {
 		return addressLine;
 	}
 
-	public void setLandmark(String addressLine) {
+	public void setAddressLine(String addressLine) {
 		this.addressLine = addressLine;
 	}
 
