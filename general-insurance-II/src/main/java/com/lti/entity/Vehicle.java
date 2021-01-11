@@ -15,7 +15,7 @@ public class Vehicle {
 	@Id
 	@GeneratedValue
 	@Column(name = "reg_no")
-	private String regNo;
+	private int regNo;
 	
 	private String manufacturer;
 	private String model;
@@ -35,10 +35,10 @@ public class Vehicle {
 	@Column(name = "vehicle_type")
 	private String vehicleType;
 	
-	public String getRegNo() {
+	public int getRegNo() {
 		return regNo;
 	}
-	public void setRegNo(String regNo) {
+	public void setRegNo(int regNo) {
 		this.regNo = regNo;
 	}
 	public String getManufacturer() {

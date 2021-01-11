@@ -7,26 +7,25 @@ public class UserServiceException extends RuntimeException {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserServiceException(String arg0, Throwable arg1, boolean arg2, boolean arg3) {
-		super(arg0, arg1, arg2, arg3);
+	public UserServiceException(String message, Throwable cause, boolean enableSuppression,
+			boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserServiceException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
+	public UserServiceException(String message, Throwable cause) {
+		super(message, cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserServiceException(String arg0) {
-		super(arg0);
+	public UserServiceException(String message) {
+		super(message);
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserServiceException(Throwable arg0) {
-		super(arg0);
+	public UserServiceException(Throwable cause) {
+		super(cause);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
+
 }

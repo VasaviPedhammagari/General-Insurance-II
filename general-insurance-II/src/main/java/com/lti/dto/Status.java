@@ -2,10 +2,10 @@ package com.lti.dto;
 
 public class Status {
 
-	private StatusType status;
-	private String message;
+	public StatusType status;
+	public String message;
 
-	public static enum StatusType {
+	public enum StatusType {
 		SUCCESS, FAILED;
 	}
 

@@ -26,6 +26,7 @@ public class RegisterController {
 		int id;
 		try {
 			id = userService.register(user);
+			System.out.println(user.getEmail());
 			RegisterStatus status = new RegisterStatus();
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Registration Successfull");
