@@ -6,10 +6,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +20,8 @@ import javax.persistence.Table;
 public class User {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_user_seq")
+	@SequenceGenerator(sequenceName = "user_seq", allocationSize = 1, name = "my_user_seq")
 	@Column(name = "user_id")
 	private int userId;
 
@@ -34,9 +39,12 @@ public class User {
 
 	private String password;
 
-	@OneToOne
-	@JoinColumn(name = "address_id")
+	@OneToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
+	@JoinColumn(name = "address_id", referencedColumnName = "addressId")
 	private Address address;
+	
+//	@OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
+//	private Address address;
 
 	@OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
 	private List<MotorInsurance> insurances;

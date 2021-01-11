@@ -25,6 +25,8 @@ public class RegisterController {
 	public @ResponseBody RegisterStatus register(@RequestBody User user) {
 		int id;
 		try {
+			Address address = user.getAddress();
+			System.out.println(address.getAddressLine());
 			id = userService.register(user);
 			System.out.println(user.getEmail());
 			RegisterStatus status = new RegisterStatus();
@@ -34,6 +36,7 @@ public class RegisterController {
 			return status;
 		}
 		catch(UserServiceException e) {
+			e.printStackTrace();
 			RegisterStatus status = new RegisterStatus();
 			status.setStatus(StatusType.FAILED);
 			status.setMessage("Registration failed");

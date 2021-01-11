@@ -3,13 +3,19 @@ package com.lti.entity;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Address {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_address_seq")
+	@SequenceGenerator(sequenceName = "address_seq", allocationSize = 1, name = "my_address_seq")
 	private int addressId;
 
 	@Column(name = "address_line")
@@ -18,8 +24,12 @@ public class Address {
 	private String city;
 	private int pin;
 	private String state;
-
-	@OneToOne(mappedBy = "address", cascade = { CascadeType.MERGE, CascadeType.REMOVE })
+	
+//	@OneToOne
+//	@JoinColumn(name = "user_id")
+//	private User user;
+	
+	@OneToOne(mappedBy = "address")
 	private User user;
 
 	public int getAddressId() {
