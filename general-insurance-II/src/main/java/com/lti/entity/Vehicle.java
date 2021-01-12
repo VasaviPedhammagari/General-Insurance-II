@@ -13,9 +13,8 @@ import javax.persistence.Table;
 public class Vehicle {
 
 	@Id
-	@GeneratedValue
 	@Column(name = "reg_no")
-	private int regNo;
+	private String regNo;
 	
 	private String manufacturer;
 	private String model;
