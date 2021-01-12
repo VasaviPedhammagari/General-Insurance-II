@@ -34,10 +34,10 @@ public class Vehicle {
 	@Column(name = "vehicle_type")
 	private String vehicleType;
 	
-	public int getRegNo() {
+	public String getRegNo() {
 		return regNo;
 	}
-	public void setRegNo(int regNo) {
+	public void setRegNo(String regNo) {
 		this.regNo = regNo;
 	}
 	public String getManufacturer() {
