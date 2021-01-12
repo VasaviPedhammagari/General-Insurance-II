@@ -5,17 +5,24 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "vehicle")
 public class Vehicle {
 
 	@Id
-	@GeneratedValue
+	//@GeneratedValue(generator = "uuid")
+	//@GenericGenerator(name = "uuid", strategy = "uuid2")
+	//@GeneratedValue	
 	@Column(name = "reg_no")
-	private int regNo;
+	private String regNo;
 	
 	private String manufacturer;
 	private String model;
@@ -35,10 +42,10 @@ public class Vehicle {
 	@Column(name = "vehicle_type")
 	private String vehicleType;
 	
-	public int getRegNo() {
+	public String getRegNo() {
 		return regNo;
 	}
-	public void setRegNo(int regNo) {
+	public void setRegNo(String regNo) {
 		this.regNo = regNo;
 	}
 	public String getManufacturer() {
