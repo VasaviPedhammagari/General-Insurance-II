@@ -18,9 +18,6 @@ import org.hibernate.annotations.GenericGenerator;
 public class Vehicle {
 
 	@Id
-	//@GeneratedValue(generator = "uuid")
-	//@GenericGenerator(name = "uuid", strategy = "uuid2")
-	//@GeneratedValue	
 	@Column(name = "reg_no")
 	private String regNo;
 	
