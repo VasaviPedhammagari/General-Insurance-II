@@ -26,7 +26,6 @@ public class ClaimController {
 		try {
 			InsuranceClaim insuranceClaim = userService.claim(claim.getPolicyNumber(), claim.getEmail(), claim.getPassword(), 
 					claim.getClaimReason(), claim.getClaimAmount());
-			//MotorInsurance motorInsurance = insuranceClaim.getMotorInsurance();
 			ClaimStatus status = new ClaimStatus();
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Claim successful");
