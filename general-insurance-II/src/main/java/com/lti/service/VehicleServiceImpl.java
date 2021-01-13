@@ -1,0 +1,94 @@
+package com.lti.service;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.lti.dao.VehicleDao;
+import com.lti.entity.Estimate;
+import com.lti.entity.Vehicle;
+import com.lti.entity.VehicleModels;
+
+@Service
+public class VehicleServiceImpl implements VehicleService {
+
+	@Autowired
+	private VehicleDao vehicleDao;
+
+	@Override
+	public List<Estimate> getPremiumPlans(Vehicle vehicle) {
+		List<Estimate> estimates = new ArrayList<>();
+		
+		LocalDate today = LocalDate.now();
+
+		Period age = Period.between(vehicle.getPurchaseDate(), today);
+
+		VehicleModels vehicleModel = vehicleDao.findPriceOfVehicle(vehicle.getManufacturer(), vehicle.getModel());
+
+		int price = vehicleModel.getPrice();
+		String type = vehicleModel.getType();
+
+		int year = age.getYears();
+		int depriciationRatePercentage = 1;
+		int depriciatedValue = 1;
+		int insurancePrice = 1;
+
+		if (year < 1) {
+			depriciationRatePercentage = 5;
+		} else if (year < 6) {
+			depriciationRatePercentage = year * 10;
+		} else {
+			depriciationRatePercentage = 80;
+		}
+
+		depriciatedValue = price - (price * depriciationRatePercentage / 100);
+
+		insurancePrice = (depriciatedValue * (2) / 100) - 20 * (depriciatedValue * (2) / 100) / 100;
+
+		Estimate e1 = new Estimate();
+		e1.setCoverage(depriciatedValue);
+		e1.setNoOfYears(1);
+		e1.setPrice(insurancePrice);
+		e1.setType("Comprehensive");
+
+		Estimate e2 = new Estimate();
+		e2.setCoverage(depriciatedValue);
+		e2.setNoOfYears(2);
+		e2.setPrice(insurancePrice * 2 - 1300);
+		e2.setType("Comprehensive");
+
+		Estimate e3 = new Estimate();
+		e3.setCoverage(depriciatedValue);
+		e3.setNoOfYears(3);
+		e3.setPrice(insurancePrice * 3 - 3000);
+		e3.setType("Comprehensive");
+
+		Estimate e4 = new Estimate();
+
+		if (type.equals("4-Wheeler")) {
+			if (price > 1000000) {
+				e4.setNoOfYears(1);
+				e4.setPrice(7790);
+				e4.setType("Third Party");
+			} else {
+				e4.setNoOfYears(1);
+				e4.setPrice(3121);
+				e4.setType("Third Party");
+			}
+		} else {
+			e4.setNoOfYears(1);
+			e4.setPrice(1530);
+			e4.setType("Third Party");
+		}
+		estimates.add(e1);
+		estimates.add(e2);
+		estimates.add(e3);
+		estimates.add(e4);
+		return estimates;
+	}
+
+}

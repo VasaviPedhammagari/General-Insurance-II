@@ -1,5 +1,9 @@
 package com.lti.service;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
@@ -7,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lti.dao.UserDao;
+import com.lti.entity.Estimate;
 import com.lti.entity.User;
+import com.lti.entity.Vehicle;
+import com.lti.entity.VehicleModels;
 import com.lti.exception.UserServiceException;
 
 @Service
@@ -35,6 +42,12 @@ public class UserServiceImpl implements UserService {
 		} catch (NoResultException e) {
 			throw new UserServiceException("incorrect password");
 		}
+	}
+
+	@Override
+	public List<VehicleModels> fetchVehicles() {
+		List<VehicleModels> models = userDao.fetchAll(VehicleModels.class);
+		return models;
 	}
 
 }
