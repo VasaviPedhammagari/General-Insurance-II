@@ -6,6 +6,7 @@ import java.util.List;
 import com.lti.dto.RenewDetails;
 import com.lti.entity.Estimate;
 import com.lti.entity.MotorInsurance;
+import com.lti.entity.Payment;
 import com.lti.entity.User;
 import com.lti.entity.Vehicle;
 import com.lti.entity.VehicleModels;
@@ -22,4 +23,7 @@ public interface UserService {
 	
     public MotorInsurance getDetails(RenewDetails renewDetails);
 
+    public MotorInsurance storeInsuranceDetails(MotorInsurance motorInsurance);
+    
+    public int savePaymentdetails(Payment payment);
 }

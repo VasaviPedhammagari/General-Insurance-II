@@ -2,12 +2,15 @@ package com.lti.entity;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +18,8 @@ import javax.persistence.Table;
 public class Payment {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_payment_seq")
+	@SequenceGenerator(sequenceName = "payment_seq", allocationSize = 1, name = "my_payment_seq")
 	@Column(name = "payment_id")
 	private int paymentId;
 	
@@ -34,7 +38,7 @@ public class Payment {
 	@Column(name = "payment_date")
 	private LocalDate paymentDate;
 	
-	@OneToOne
+	@OneToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "policy_no")
 	private MotorInsurance motorInsurance;
 

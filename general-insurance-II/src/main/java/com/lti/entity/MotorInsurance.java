@@ -2,13 +2,16 @@ package com.lti.entity;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -16,7 +19,8 @@ import javax.persistence.Table;
 public class MotorInsurance {
     
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_policy_seq")
+	@SequenceGenerator(sequenceName = "policy_seq", allocationSize = 1, name = "my_policy_seq")
 	@Column(name = "policy_no")
 	private int policyNumber;
 	
@@ -38,11 +42,14 @@ public class MotorInsurance {
 	@Column(name = "balance_claim_amount")
 	private double balanceClaimAmount;
 	
-	@ManyToOne
+	@Column(name = "insurance_premium")
+	private double insurancePremium;
+	
+	@ManyToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToOne
+	@OneToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "vehicle_id")
 	private Vehicle vehicle;
 
@@ -116,6 +123,14 @@ public class MotorInsurance {
 
 	public void setVehicle(Vehicle vehicle) {
 		this.vehicle = vehicle;
+	}
+
+	public double getInsurancePremium() {
+		return insurancePremium;
+	}
+
+	public void setInsurancePremium(double insurancePremium) {
+		this.insurancePremium = insurancePremium;
 	}
 	
 }
