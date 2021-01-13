@@ -1,13 +1,25 @@
 package com.lti.service;
 
-import javax.transaction.Transactional;
+import com.lti.entity.InsuranceClaim;
+import java.util.List;
 
+import com.lti.dto.RenewDetails;
+import com.lti.entity.Estimate;
+import com.lti.entity.MotorInsurance;
 import com.lti.entity.User;
+import com.lti.entity.Vehicle;
+import com.lti.entity.VehicleModels;
 
 public interface UserService {
 
 	public User register(User user);
 
 	public User login(String email, String password);
+	
+	public InsuranceClaim claim(int policyNumber, String email, String password, String claimReason, double claimAmount);
+	
+	public List<VehicleModels> fetchVehicles();
+	
+    public MotorInsurance getDetails(RenewDetails renewDetails);
 
 }
