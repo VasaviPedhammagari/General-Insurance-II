@@ -6,7 +6,9 @@ import com.lti.entity.Estimate;
 import com.lti.entity.Vehicle;
 
 public interface VehicleService {
-	
+
 	public List<Estimate> getPremiumPlans(Vehicle vehicle);
-	
+
+	public String register(Vehicle vehicle);
+
 }

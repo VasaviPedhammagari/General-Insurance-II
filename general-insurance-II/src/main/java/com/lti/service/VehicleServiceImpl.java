@@ -5,6 +5,8 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import com.lti.dao.VehicleDao;
 import com.lti.entity.Estimate;
 import com.lti.entity.Vehicle;
 import com.lti.entity.VehicleModels;
+import com.lti.exception.UserServiceException;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -19,10 +22,19 @@ public class VehicleServiceImpl implements VehicleService {
 	@Autowired
 	private VehicleDao vehicleDao;
 
+	@Transactional
+	public String register(Vehicle vehicle) {
+		if (vehicleDao.isVehiclePresent(vehicle.getRegNo()))
+			throw new UserServiceException("Vehicle already registerd");
+		Vehicle newVehicle = (Vehicle) vehicleDao.store(vehicle);
+		return newVehicle.getRegNo();
+
+	}
+
 	@Override
 	public List<Estimate> getPremiumPlans(Vehicle vehicle) {
 		List<Estimate> estimates = new ArrayList<>();
-		
+
 		LocalDate today = LocalDate.now();
 
 		Period age = Period.between(vehicle.getPurchaseDate(), today);
@@ -89,6 +101,7 @@ public class VehicleServiceImpl implements VehicleService {
 		estimates.add(e3);
 		estimates.add(e4);
 		return estimates;
+
 	}
 
 }
