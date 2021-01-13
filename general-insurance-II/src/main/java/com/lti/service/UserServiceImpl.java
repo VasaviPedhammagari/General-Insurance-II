@@ -17,6 +17,7 @@ import com.lti.dto.RenewDetails;
 import com.lti.entity.InsuranceClaim;
 import com.lti.entity.Estimate;
 import com.lti.entity.MotorInsurance;
+import com.lti.entity.Payment;
 import com.lti.entity.User;
 import com.lti.entity.Vehicle;
 import com.lti.entity.VehicleModels;
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private VehicleService vehicleService;
 
 	@Transactional
 	public int register(User user) {
@@ -111,5 +115,44 @@ public class UserServiceImpl implements UserService {
 		} catch (NoResultException e) {
 			throw new UserServiceException("incorrect mail id or policy number or phone number");
 		}
+	}
+
+	@Override
+	@Transactional
+	public MotorInsurance storeInsuranceDetails(MotorInsurance motorInsurance) {
+	    try {		
+		    motorInsurance.setPlanStartDate(LocalDate.now());
+			motorInsurance.setPlanExpiryDate(LocalDate.now().plusYears(motorInsurance.getNoOfYrs()));
+			motorInsurance.setTotalClaimAmount(0);
+			
+			List<Estimate> list =vehicleService.getPremiumPlans(motorInsurance.getVehicle());
+			for(Estimate l : list) {
+				System.out.println(l.getType() + " "+ motorInsurance.getPlanType());
+				if(l.getType()==motorInsurance.getPlanType()&&l.getNoOfYears()==motorInsurance.getNoOfYrs()) {
+					if(l.getType()=="Third Party") {
+						motorInsurance.setInsurancePremium(l.getPrice()*motorInsurance.getNoOfYrs());
+					}else {
+						motorInsurance.setBalanceClaimAmount(l.getCoverage());
+						motorInsurance.setInsurancePremium(l.getPrice());
+					}
+				}	
+			}
+			motorInsurance = (MotorInsurance) userDao.store(motorInsurance);
+			return motorInsurance;
+	    }catch(Exception e) {
+	    	e.printStackTrace();
+	    	throw new UserServiceException(e.getMessage());
+	    }	
+	}
+
+	@Override
+	@Transactional
+	public int savePaymentdetails(Payment payment) {
+	      payment.setInsuranceStatus("Active");
+	      payment.setPaymentStatus("Success");
+	      payment.setPaymentDate(LocalDate.now());
+	      
+	      payment = (Payment) userDao.store(payment);
+		return payment.getPaymentId();
 	}
 }
