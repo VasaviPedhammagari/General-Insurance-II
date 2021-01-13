@@ -2,12 +2,15 @@ package com.lti.entity;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -15,9 +18,10 @@ import javax.persistence.Table;
 public class InsuranceClaim {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_claim_seq")
+	@SequenceGenerator(sequenceName = "claim_seq", allocationSize = 1, name = "my_claim_seq")
 	@Column(name = "claim_no")
-	private int claimNo;
+	private int claimNumber;
 	
 	@Column(name = "claim_reason")
 	private String  claimReason;
@@ -29,18 +33,18 @@ public class InsuranceClaim {
 	private String claimStatus;
 	
 	@Column(name = "claim_amount")
-	private int claimAmount;
+	private double claimAmount;
 	
 	@ManyToOne
 	@JoinColumn(name = "policy_no")
 	private MotorInsurance motorInsurance;
 
-	public int getClaimNo() {
-		return claimNo;
+	public int getClaimNumber() {
+		return claimNumber;
 	}
 
-	public void setClaimNo(int claimNo) {
-		this.claimNo = claimNo;
+	public void setClaimNumber(int claimNumber) {
+		this.claimNumber = claimNumber;
 	}
 
 	public String getClaimReason() {
@@ -67,11 +71,11 @@ public class InsuranceClaim {
 		this.claimStatus = claimStatus;
 	}
 
-	public int getClaimAmount() {
+	public double getClaimAmount() {
 		return claimAmount;
 	}
 
-	public void setClaimAmount(int claimAmount) {
+	public void setClaimAmount(double claimAmount) {
 		this.claimAmount = claimAmount;
 	}
 
