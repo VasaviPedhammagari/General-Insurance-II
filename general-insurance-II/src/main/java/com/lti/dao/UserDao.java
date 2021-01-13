@@ -42,4 +42,18 @@ public class UserDao extends GenericDao{
 		
 	}
 
+	public boolean isPolicyPresent(int policyNumber, int userId) {
+		return (Long) entityManager
+				.createQuery("select count(m.policyNumber) from MotorInsurance m join m.user u where u.userId = :userId and m.policyNumber =:policyNumber")
+		        .setParameter("userId", userId).setParameter("policyNumber", policyNumber)
+		        .getSingleResult() == 1 ? true : false;
+		}
+	
+	public double findBalanceClaimAmount(int policyNumber) {
+		return (Double) entityManager
+				.createQuery("select m.balanceClaimAmount from MotorInsurance m where m.policyNumber = :policyNumber")
+				.setParameter("policyNumber",policyNumber)
+				.getSingleResult();
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.lti.service;
 
 import java.time.LocalDate;
+
 import java.time.Period;
 import java.util.List;
 
@@ -8,10 +9,12 @@ import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.lti.dao.UserDao;
 import com.lti.dto.RenewDetails;
+import com.lti.entity.InsuranceClaim;
 import com.lti.entity.Estimate;
 import com.lti.entity.MotorInsurance;
 import com.lti.entity.User;
@@ -44,8 +47,55 @@ public class UserServiceImpl implements UserService {
 		} catch (NoResultException e) {
 			throw new UserServiceException("incorrect password");
 		}
-	}
+	}	
+	@Override
+	@Transactional
+	public InsuranceClaim claim(int policyNumber, String email, String password, String claimReason, double claimAmount) {
+		try {
+			if (!userDao.isUserPresent(email))
+				throw new UserServiceException("User not registered");
+			else {
+					System.out.println("Email found");
+					if (userDao.findByEmailAndPassword(email, password)>0) {
+						System.out.println("Password found");
+						int userId = userDao.findByEmailAndPassword(email, password);
+						if (!userDao.isPolicyPresent(policyNumber, userId))
+							throw new UserServiceException("Incorrect policy number");
+						else {
+							System.out.println("Policy found");
+							if (userDao.findBalanceClaimAmount(policyNumber)>claimAmount) {
+								
+								System.out.println(userDao.findBalanceClaimAmount(policyNumber));
 
+								InsuranceClaim insuranceClaim = new InsuranceClaim();
+								insuranceClaim.setClaimReason(claimReason);
+								insuranceClaim.setClaimDate(LocalDate.now());
+								insuranceClaim.setClaimStatus("APPROVED");
+								insuranceClaim.setClaimAmount(claimAmount);
+								
+								MotorInsurance motorInsurance = userDao.Fetch(MotorInsurance.class, policyNumber);
+								motorInsurance.setTotalClaimAmount(motorInsurance.getTotalClaimAmount() + claimAmount);
+								motorInsurance.setBalanceClaimAmount(motorInsurance.getBalanceClaimAmount() - claimAmount);
+								
+								insuranceClaim.setMotorInsurance(motorInsurance);
+								
+								MotorInsurance updatedmotorInsurance = (MotorInsurance) userDao.store(motorInsurance);
+								InsuranceClaim updatedInsuranceClaim = (InsuranceClaim) userDao.store(insuranceClaim);
+								return updatedInsuranceClaim;
+							}
+							else
+								throw new UserServiceException("Enough money not available for claim");
+						}
+					}
+					else
+						throw new UserServiceException("Incorrect password");
+			}
+		}
+		catch(EmptyResultDataAccessException e) {
+			throw new UserServiceException("Incorrect password");
+		}
+	}
+	
 	@Override
 	public List<VehicleModels> fetchVehicles() {
 		List<VehicleModels> models = userDao.fetchAll(VehicleModels.class);
