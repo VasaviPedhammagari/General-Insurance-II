@@ -2,7 +2,7 @@ package com.lti.dto;
 
 import com.lti.entity.MotorInsurance;
 
-public class RenewStatus extends Status{
+public class InsuranceStatus extends Status{
 
 	private MotorInsurance motorInsurance;
 

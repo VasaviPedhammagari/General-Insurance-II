@@ -38,6 +38,9 @@ public class MotorInsurance {
 	@Column(name = "balance_claim_amount")
 	private double balanceClaimAmount;
 	
+	@Column(name = "insurance_premium")
+	private double insurancePremium;
+	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -116,6 +119,14 @@ public class MotorInsurance {
 
 	public void setVehicle(Vehicle vehicle) {
 		this.vehicle = vehicle;
+	}
+
+	public double getInsurancePremium() {
+		return insurancePremium;
+	}
+
+	public void setInsurancePremium(double insurancePremium) {
+		this.insurancePremium = insurancePremium;
 	}
 	
 }
