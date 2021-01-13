@@ -36,5 +36,4 @@ public class UserServiceImpl implements UserService {
 			throw new UserServiceException("incorrect password");
 		}
 	}
-
 }

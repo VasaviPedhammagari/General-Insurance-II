@@ -1,7 +1,5 @@
 package com.lti.service;
 
-import javax.transaction.Transactional;
-
 import com.lti.entity.User;
 
 public interface UserService {
