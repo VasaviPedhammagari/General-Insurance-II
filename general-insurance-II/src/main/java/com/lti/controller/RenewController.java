@@ -20,7 +20,7 @@ import com.lti.service.UserService;
 @RestController
 @CrossOrigin
 public class RenewController {
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -28,28 +28,26 @@ public class RenewController {
 	public @ResponseBody RenewStatus renew(@RequestBody RenewDetails renewDetails) {
 		try {
 			MotorInsurance motorInsurance = userService.getDetails(renewDetails);
-			if(motorInsurance.getPlanExpiryDate().compareTo(LocalDate.now()) <= 0) {
-			RenewStatus status = new RenewStatus();
-			status.setMotorInsurance(motorInsurance);
-			status.setStatus(StatusType.SUCCESS);
-			status.setMessage("User Found");
-			 
-			return status;
-			}	
-			else
-			{
+			if (motorInsurance.getPlanExpiryDate().compareTo(LocalDate.now()) <= 0) {
+				RenewStatus status = new RenewStatus();
+				status.setMotorInsurance(motorInsurance);
+				status.setStatus(StatusType.SUCCESS);
+				status.setMessage("User Found");
+
+				return status;
+			} else {
 				RenewStatus status = new RenewStatus();
 				status.setStatus(StatusType.FAILED);
-				status .setMessage("Insurance is not expired");
+				status.setMessage("Insurance is not expired");
 				status.setMotorInsurance(motorInsurance);
-				
+
 				return status;
-			}	
-		} catch(UserServiceException e) {
+			}
+		} catch (UserServiceException e) {
 			RenewStatus status = new RenewStatus();
 			status.setStatus(StatusType.FAILED);
 			status.setMessage(e.getMessage());
-			
+
 			return status;
 		}
 	}
