@@ -17,11 +17,11 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 
 	@Transactional
-	public int register(User user) {
+	public User register(User user) {
 		if (userDao.isUserPresent(user.getEmail()))
 			throw new UserServiceException("User already registerd");
 		User updatedUser = (User) userDao.store(user);
-		return updatedUser.getUserId();
+		return updatedUser;
 	}
 
 	@Override

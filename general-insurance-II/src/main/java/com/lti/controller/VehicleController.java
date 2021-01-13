@@ -25,16 +25,12 @@ public class VehicleController {
 	public @ResponseBody VehicleStatus register(@RequestBody Vehicle vehicle) {
 		String vehicleId;
 		try {
-			//System.out.println(vehicle.getRegNo()+" "+vehicle.getManufacturer()+" "+vehicle.getEngineNumber());
 			vehicleId = vehicleService.register(vehicle);
-			//System.out.println("called!");
 			VehicleStatus status = new VehicleStatus();
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Registration Successfull");
 			status.setRegisteredVehicleId(vehicleId);
 			return status;
-			//return "Vehicle "+vehicleId+" is registered";*/
-			//return null;
 		}
 		catch(VehicleServiceException e) {
 			System.out.println("exception");
@@ -43,7 +39,6 @@ public class VehicleController {
 			status.setStatus(StatusType.FAILED);
 			status.setMessage("Registration failed");
 			return status;
-			//return "Vehicle Registration Failed";
 		}
 	}
 

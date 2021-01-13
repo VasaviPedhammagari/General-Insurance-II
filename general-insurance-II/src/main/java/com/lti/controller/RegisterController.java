@@ -23,16 +23,17 @@ public class RegisterController {
 	
 	@PostMapping("/register")
 	public @ResponseBody RegisterStatus register(@RequestBody User user) {
-		int id;
+		User registeredUser;
 		try {
 			Address address = user.getAddress();
 			System.out.println(address.getAddressLine());
-			id = userService.register(user);
+			registeredUser = userService.register(user);
 			System.out.println(user.getEmail());
 			RegisterStatus status = new RegisterStatus();
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Registration Successfull");
-			status.setRegisteredUserId(id);
+			status.setRegisteredUserId(registeredUser.getUserId());
+			status.setRegisteredUserName(registeredUser.getUserName());
 			return status;
 		}
 		catch(UserServiceException e) {
