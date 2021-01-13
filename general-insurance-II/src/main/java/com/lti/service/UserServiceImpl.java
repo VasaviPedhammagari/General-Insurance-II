@@ -1,5 +1,9 @@
 package com.lti.service;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
@@ -7,7 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lti.dao.UserDao;
+import com.lti.dto.RenewDetails;
+import com.lti.entity.Estimate;
+import com.lti.entity.MotorInsurance;
 import com.lti.entity.User;
+import com.lti.entity.Vehicle;
+import com.lti.entity.VehicleModels;
 import com.lti.exception.UserServiceException;
 
 @Service
@@ -34,6 +43,24 @@ public class UserServiceImpl implements UserService {
 			return user;
 		} catch (NoResultException e) {
 			throw new UserServiceException("incorrect password");
+		}
+	}
+
+	@Override
+	public List<VehicleModels> fetchVehicles() {
+		List<VehicleModels> models = userDao.fetchAll(VehicleModels.class);
+		return models;
+	}
+
+	@Override
+	public MotorInsurance getDetails(RenewDetails renewDetails) {
+		try {
+			if(!userDao.isUserPresent(renewDetails.getEmail()))
+				throw new UserServiceException("User not registered");
+		    MotorInsurance motorInsurance = userDao.getInsuranceDetails(renewDetails);
+		    return motorInsurance;
+		} catch(NoResultException e) {
+			throw new UserServiceException("incorrect mail id or policy number or phone number");
 		}
 	}
 }
