@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.lti.dao.UserDao;
 import com.lti.dto.RenewDetails;
+import com.lti.dto.ValidateClaim;
 import com.lti.entity.Estimate;
 import com.lti.entity.InsuranceClaim;
 import com.lti.entity.MotorInsurance;
@@ -211,5 +212,21 @@ public class UserServiceImpl implements UserService {
 	      
 	      payment = (Payment) userDao.store(payment);
 		return payment.getPaymentId();
+	}
+
+	@Override
+	public List<InsuranceClaim> getAllClaims() {
+		return userDao.fetchAll(InsuranceClaim.class);
+	}
+
+	@Override
+	public void validateClaimUpdate(ValidateClaim validateClaim) {
+		userDao.updateClaimAmount(validateClaim.getClaimNumber(), validateClaim.getClaimAmount());
+	}
+
+	@Override
+	public void denyClaimUpdate(ValidateClaim validateClaim) {
+		userDao.denyClaim(validateClaim.getClaimNumber());
+		
 	}
 }
