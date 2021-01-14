@@ -27,12 +27,12 @@ public class RegisterController {
 		try {
 			Address address = user.getAddress();
 			System.out.println(address.getAddressLine());
-			id = userService.register(user);
+		    user = userService.register(user);
 			System.out.println(user.getEmail());
 			RegisterStatus status = new RegisterStatus();
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Registration Successfull");
-			status.setRegisteredUserId(id);
+			status.setUser(user);
 			return status;
 		}
 		catch(UserServiceException e) {

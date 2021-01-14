@@ -30,6 +30,7 @@ public class RenewController {
 			MotorInsurance motorInsurance = userService.getDetails(renewDetails);
 
 			if (motorInsurance.getPlanExpiryDate().compareTo(LocalDate.now()) <= 0) {
+				motorInsurance.getUser().getAddress().setUser(null);
 				InsuranceStatus status = new InsuranceStatus();
 				status.setMotorInsurance(motorInsurance);
 				status.setStatus(StatusType.SUCCESS);

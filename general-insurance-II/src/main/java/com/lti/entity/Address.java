@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Address {
 
@@ -28,7 +30,7 @@ public class Address {
 //	@OneToOne
 //	@JoinColumn(name = "user_id")
 //	private User user;
-	
+	@JsonIgnoreProperties(value = {"address"},allowSetters = true)
 	@OneToOne(mappedBy = "address")
 	private User user;
 
