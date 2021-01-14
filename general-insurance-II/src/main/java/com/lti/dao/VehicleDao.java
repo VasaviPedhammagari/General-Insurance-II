@@ -18,5 +18,11 @@ public class VehicleDao extends GenericDao {
 		return (Long) entityManager.createQuery("select count(v) from Vehicle v where v.regNo = :regNo")
 				.setParameter("regNo", regNo).getSingleResult() == 1 ? true : false;
 	}
+	
+	public boolean isVehicleModelPresent(String manufacturer,String model){
+		
+		return (Long) entityManager.createQuery("select count(v) from VehicleModels v where v.manufacturer = :manufacturer and v.model = :model")
+				.setParameter("manufacturer", manufacturer).setParameter("model", model).getSingleResult() == 1 ? true : false; 
+	}
 
 }

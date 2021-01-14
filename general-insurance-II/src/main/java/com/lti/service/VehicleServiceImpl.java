@@ -105,4 +105,12 @@ public class VehicleServiceImpl implements VehicleService {
 
 	}
 
+	@Override
+	@Transactional
+	public VehicleModels addNewVehicle(VehicleModels vehicleModel) {
+		if (vehicleDao.isVehicleModelPresent(vehicleModel.getManufacturer(),vehicleModel.getModel()))
+			throw new VehicleServiceException("Vehicle Model already exists!");		
+		return (VehicleModels) vehicleDao.store(vehicleModel);
+	}
+
 }
