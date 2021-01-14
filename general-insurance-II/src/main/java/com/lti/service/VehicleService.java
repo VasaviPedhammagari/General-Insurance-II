@@ -9,6 +9,6 @@ public interface VehicleService {
 
 	public List<Estimate> getPremiumPlans(Vehicle vehicle);
 
-	public String register(Vehicle vehicle);
+	public Vehicle register(Vehicle vehicle);
 
 }

@@ -1,17 +1,22 @@
 package com.lti.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "vehicle")
@@ -38,6 +43,17 @@ public class Vehicle {
 	
 	@Column(name = "vehicle_type")
 	private String vehicleType;
+	
+	@JsonIgnoreProperties(value = {"vehicle"},allowSetters = true)
+    @OneToMany(mappedBy = "vehicle",cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
+	private List<MotorInsurance> insurances;
+	
+	public List<MotorInsurance> getInsurances() {
+		return insurances;
+	}
+	public void setInsurances(List<MotorInsurance> insurances) {
+		this.insurances = insurances;
+	}
 	
 	public String getRegNo() {
 		return regNo;

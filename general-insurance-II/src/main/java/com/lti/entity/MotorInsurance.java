@@ -14,6 +14,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="motor_insurance")
 public class MotorInsurance {
@@ -45,11 +47,14 @@ public class MotorInsurance {
 	@Column(name = "insurance_premium")
 	private double insurancePremium;
 	
+	@JsonIgnoreProperties(value = {"insurances"},allowSetters = true)
 	@ManyToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
+	@JsonIgnoreProperties(value = {"insurances"},allowSetters = true)
+	@ManyToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
+	//@OneToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "vehicle_id")
 	private Vehicle vehicle;
 
