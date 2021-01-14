@@ -1,17 +1,17 @@
 package com.lti.dto;
 
+import com.lti.entity.Vehicle;
+
 public class VehicleStatus extends Status{
 	
-	private String registeredVehicleId;
+	private Vehicle vehicle;
 
-	public String getRegisteredVehicleId() {
-		return registeredVehicleId;
+	public Vehicle getVehicle() {
+		return vehicle;
 	}
 
-	public void setRegisteredVehicleId(String registeredVehicleId) {
-		this.registeredVehicleId = registeredVehicleId;
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
 	}
-	
-	
 
 }

@@ -24,11 +24,11 @@ public class VehicleServiceImpl implements VehicleService {
 	private VehicleDao vehicleDao;
 
 	@Transactional
-	public String register(Vehicle vehicle) {
+	public Vehicle register(Vehicle vehicle) {
 		if (vehicleDao.isVehiclePresent(vehicle.getRegNo()))
 			throw new VehicleServiceException("Vehicle already registerd");
 		Vehicle newVehicle = (Vehicle) vehicleDao.store(vehicle);
-		return newVehicle.getRegNo();
+		return newVehicle;
 
 	}
 
@@ -86,16 +86,16 @@ public class VehicleServiceImpl implements VehicleService {
 			if (price > 1000000) {
 				e4.setNoOfYears(1);
 				e4.setPrice(7790);
-				e4.setType("Third Party");
+				e4.setType("Third Party Liability");
 			} else {
 				e4.setNoOfYears(1);
 				e4.setPrice(3121);
-				e4.setType("Third Party");
+				e4.setType("Third Party Liability");
 			}
 		} else {
 			e4.setNoOfYears(1);
 			e4.setPrice(1530);
-			e4.setType("Third Party");
+			e4.setType("Third Party Liability");
 		}
 		estimates.add(e1);
 		estimates.add(e2);

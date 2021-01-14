@@ -179,22 +179,31 @@ public class UserServiceImpl implements UserService {
 	public MotorInsurance storeInsuranceDetails(MotorInsurance motorInsurance) {
 	    try {		
 		    motorInsurance.setPlanStartDate(LocalDate.now());
+		    //motorInsurance.setPlanStartDate(LocalDate.of(2019,01,01));
 			motorInsurance.setPlanExpiryDate(LocalDate.now().plusYears(motorInsurance.getNoOfYrs()));
 			motorInsurance.setTotalClaimAmount(0);
 			
 			List<Estimate> list =vehicleService.getPremiumPlans(motorInsurance.getVehicle());
+			System.out.println(motorInsurance.getPlanType()+" "+ motorInsurance.getNoOfYrs());
+			
 			for(Estimate l : list) {
-				System.out.println(l.getType() + " "+ motorInsurance.getPlanType());
-				if(l.getType()==motorInsurance.getPlanType()&&l.getNoOfYears()==motorInsurance.getNoOfYrs()) {
-					if(l.getType()=="Third Party") {
+				System.out.println(l.getType()+" "+l.getNoOfYears());
+				if(l.getType().equals(motorInsurance.getPlanType())) {
+					//System.out.println(l.getType());
+					if(l.getType().equals("Third Party Liability")) {
+						System.out.println("inside third party if");
 						motorInsurance.setInsurancePremium(l.getPrice()*motorInsurance.getNoOfYrs());
-					}else {
-						motorInsurance.setBalanceClaimAmount(l.getCoverage());
+					}
+					if(l.getType().equals("Comprehensive") && l.getNoOfYears() == motorInsurance.getNoOfYrs()){
+						System.out.println("inside comprehensive");
+						motorInsurance.setBalanceClaimAmount((double)l.getCoverage());
 						motorInsurance.setInsurancePremium(l.getPrice());
 					}
 				}	
 			}
+			System.out.println(motorInsurance.getUser().getUserId());
 			motorInsurance = (MotorInsurance) userDao.store(motorInsurance);
+			System.out.println(motorInsurance.getInsurancePremium());
 			return motorInsurance;
 	    }catch(Exception e) {
 	    	e.printStackTrace();
@@ -206,7 +215,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public int savePaymentdetails(Payment payment) {
 	      payment.setInsuranceStatus("Active");
-	      payment.setPaymentStatus("Success");
+	      payment.setPaymentStatus("Paid");
 	      payment.setPaymentDate(LocalDate.now());
 	      
 	      payment = (Payment) userDao.store(payment);

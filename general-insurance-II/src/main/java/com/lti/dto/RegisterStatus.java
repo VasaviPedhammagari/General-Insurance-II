@@ -1,24 +1,16 @@
 package com.lti.dto;
 
+import com.lti.entity.User;
+
 public class RegisterStatus extends Status {
 
-	private int registeredUserId;
-	private String registeredUserName;
-
-	public int getRegisteredUserId() {
-		return registeredUserId;
+	private User user;
+	public User getUser() {
+		return user;
 	}
 
-	public void setRegisteredUserId(int registeredUserId) {
-		this.registeredUserId = registeredUserId;
-	}
-
-	public String getRegisteredUserName() {
-		return registeredUserName;
-	}
-
-	public void setRegisteredUserName(String registeredUserName) {
-		this.registeredUserName = registeredUserName;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

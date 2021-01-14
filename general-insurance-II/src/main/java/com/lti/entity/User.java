@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "user_details")
 public class User {
@@ -39,13 +41,14 @@ public class User {
 
 	private String password;
 
+	@JsonIgnoreProperties(value = {"address"},allowSetters = true)
 	@OneToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "address_id", referencedColumnName = "addressId")
 	private Address address;
 	
 //	@OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
 //	private Address address;
-
+    @JsonIgnoreProperties(value = {"user"},allowSetters = true)
 	@OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
 	private List<MotorInsurance> insurances;
 	
