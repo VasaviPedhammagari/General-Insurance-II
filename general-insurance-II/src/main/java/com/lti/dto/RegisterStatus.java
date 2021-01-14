@@ -5,7 +5,6 @@ import com.lti.entity.User;
 public class RegisterStatus extends Status {
 
 	private User user;
-
 	public User getUser() {
 		return user;
 	}

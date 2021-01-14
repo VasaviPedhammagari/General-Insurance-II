@@ -17,7 +17,7 @@ public class VehicleModelController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("fetchVehicleModel")
+	@GetMapping("/fetchVehicleModel")
 	public List<VehicleModels> fetchModels(){
 		return userService.fetchVehicles();
 	}

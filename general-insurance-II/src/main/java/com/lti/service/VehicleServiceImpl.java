@@ -15,6 +15,7 @@ import com.lti.entity.Estimate;
 import com.lti.entity.Vehicle;
 import com.lti.entity.VehicleModels;
 import com.lti.exception.UserServiceException;
+import com.lti.exception.VehicleServiceException;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -25,7 +26,7 @@ public class VehicleServiceImpl implements VehicleService {
 	@Transactional
 	public Vehicle register(Vehicle vehicle) {
 		if (vehicleDao.isVehiclePresent(vehicle.getRegNo()))
-			throw new UserServiceException("Vehicle already registerd");
+			throw new VehicleServiceException("Vehicle already registerd");
 		Vehicle newVehicle = (Vehicle) vehicleDao.store(vehicle);
 		return newVehicle;
 

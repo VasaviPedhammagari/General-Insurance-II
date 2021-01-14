@@ -23,7 +23,6 @@ public class RegisterController {
 	
 	@PostMapping("/register")
 	public @ResponseBody RegisterStatus register(@RequestBody User user) {
-		int id;
 		try {
 			Address address = user.getAddress();
 			System.out.println(address.getAddressLine());
@@ -32,6 +31,7 @@ public class RegisterController {
 			RegisterStatus status = new RegisterStatus();
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Registration Successfull");
+
 			status.setUser(user);
 			return status;
 		}

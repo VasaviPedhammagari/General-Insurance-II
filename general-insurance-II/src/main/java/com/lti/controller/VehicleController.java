@@ -32,8 +32,6 @@ public class VehicleController {
 			status.setMessage("Registration Successfull");
 			status.setVehicle(vehicle);
 			return status;
-			//return "Vehicle "+vehicleId+" is registered";*/
-			//return null;
 		}
 		catch(VehicleServiceException e) {
 			System.out.println("exception");
@@ -42,7 +40,6 @@ public class VehicleController {
 			status.setStatus(StatusType.FAILED);
 			status.setMessage("Registration failed");
 			return status;
-			//return "Vehicle Registration Failed";
 		}
 	}
 
