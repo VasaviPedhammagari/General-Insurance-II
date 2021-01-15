@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.lti.dao.UserDao;
 import com.lti.dto.RenewDetails;
+import com.lti.dto.ResetPassword;
 import com.lti.entity.Estimate;
 import com.lti.entity.InsuranceClaim;
 import com.lti.entity.MotorInsurance;
@@ -221,4 +222,31 @@ public class UserServiceImpl implements UserService {
 	      payment = (Payment) userDao.store(payment);
 		return payment.getPaymentId();
 	}
+
+	@Override
+	@Transactional
+	public int resetPassword(User user) {
+		if(!userDao.isUserPresent(user.getEmail()))
+			throw new UserServiceException("User Not Found");
+		User updatedPassword = (User) userDao.store(user);
+		return updatedPassword.getUserId();
+	}
+
+
+//	@Override
+//	public ResetPassword resetPassword(ResetPassword resetPassword) {
+//		ResetPassword newPassword = new ResetPassword();
+//		 if (userDao.isUserPresent(email)){
+//	            User existingUser = UserDao.findById(email).get();
+//
+//	            existingUser.setPassword(resetPassword.getPassword());
+//
+//	            User updatedUser = UserDao.save(existingUser);
+//
+//	            return new ResetPassword(updatedUser.getEmail(), updatedUser.getPassword());
+//	        }else{
+//	            return null;
+//	        }
+//	 }
+
 }
