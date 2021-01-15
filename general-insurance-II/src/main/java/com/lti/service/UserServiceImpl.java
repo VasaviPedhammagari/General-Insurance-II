@@ -156,6 +156,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public MotorInsurance getRenewDetails(RenewDetails renewDetails) {
+		System.out.println(renewDetails.getEmail());
+		System.out.println(renewDetails.getPhoneNo());
+		System.out.println(renewDetails.getPolicyNumber());
 		try {
 			if (!userDao.isUserPresent(renewDetails.getEmail()))
 				throw new UserServiceException("User not registered");
