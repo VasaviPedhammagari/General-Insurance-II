@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.dto.Status.StatusType;
+import com.lti.dao.VehicleDao;
 import com.lti.dto.VehicleModelStatus;
 import com.lti.entity.VehicleModels;
 import com.lti.exception.VehicleModelServiceException;
+import com.lti.exception.VehicleServiceException;
 import com.lti.service.VehicleService;
 
 @RestController
@@ -22,13 +24,25 @@ public class AddNewVehicleController {
 	
 	@Autowired
 	private VehicleService vehicleService;
+	@Autowired
+	private VehicleDao vehicleDao;
 	
 	@PostMapping("/addnewvehicle")
 	public @ResponseBody VehicleModelStatus add (@RequestBody VehicleModels vehicleModel) {
 		VehicleModels newVehicleModel;
 		try {
-			newVehicleModel = vehicleService.addNewVehicle(vehicleModel);
 			VehicleModelStatus status = new VehicleModelStatus();
+			if (vehicleDao.isVehicleModelPresent(vehicleModel.getManufacturer(),vehicleModel.getModel())) {
+				status.setStatus(StatusType.FAILED);
+				status.setMessage("Vehicle model Aready exists!");
+				return status;
+			}
+			if(vehicleDao.isVehicleIdPresent(vehicleModel.getModelId())) {
+				status.setStatus(StatusType.FAILED);
+				status.setMessage("Vehicle Id already exists!");
+				return status;
+			}
+			newVehicleModel = vehicleService.addNewVehicle(vehicleModel);
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Added new model successfully!");
 			status.setVehicleModel(newVehicleModel);
