@@ -1,5 +1,7 @@
 package com.lti.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.lti.dto.RenewDetails;
@@ -50,6 +52,13 @@ public class UserDao extends GenericDao{
 				.createQuery("select m.balanceClaimAmount from MotorInsurance m where m.policyNumber = :policyNumber")
 				.setParameter("policyNumber",policyNumber)
 				.getSingleResult();
+	}
+	
+	public List<MotorInsurance> fetchInsuranceDetailsByUserId(int userId){
+		return entityManager
+			   .createQuery("select u.insurances from User u where u.userId = :userId")
+			   .setParameter("userId", userId)
+			   .getResultList();
 	}
 
 }

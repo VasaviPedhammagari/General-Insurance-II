@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public MotorInsurance getDetails(RenewDetails renewDetails) {
+	public MotorInsurance getRenewDetails(RenewDetails renewDetails) {
 		try {
 			if (!userDao.isUserPresent(renewDetails.getEmail()))
 				throw new UserServiceException("User not registered");
@@ -186,18 +186,18 @@ public class UserServiceImpl implements UserService {
 			List<Estimate> list =vehicleService.getPremiumPlans(motorInsurance.getVehicle());
 			System.out.println(motorInsurance.getPlanType()+" "+ motorInsurance.getNoOfYrs());
 			
-			for(Estimate l : list) {
-				System.out.println(l.getType()+" "+l.getNoOfYears());
-				if(l.getType().equals(motorInsurance.getPlanType())) {
-					//System.out.println(l.getType());
-					if(l.getType().equals("Third Party Liability")) {
+			for(Estimate estimate : list) {
+				System.out.println(estimate.getType()+" "+estimate.getNoOfYears());
+				if(estimate.getType().equals(motorInsurance.getPlanType())) {
+					//System.out.println(estimate.getType());
+					if(estimate.getType().equals("Third Party Liability")) {
 						System.out.println("inside third party if");
-						motorInsurance.setInsurancePremium(l.getPrice()*motorInsurance.getNoOfYrs());
+						motorInsurance.setInsurancePremium(estimate.getPrice()*motorInsurance.getNoOfYrs());
 					}
-					if(l.getType().equals("Comprehensive") && l.getNoOfYears() == motorInsurance.getNoOfYrs()){
+					if(estimate.getType().equals("Comprehensive") && estimate.getNoOfYears() == motorInsurance.getNoOfYrs()){
 						System.out.println("inside comprehensive");
-						motorInsurance.setBalanceClaimAmount((double)l.getCoverage());
-						motorInsurance.setInsurancePremium(l.getPrice());
+						motorInsurance.setBalanceClaimAmount((double)estimate.getCoverage());
+						motorInsurance.setInsurancePremium(estimate.getPrice());
 					}
 				}	
 			}
@@ -220,5 +220,18 @@ public class UserServiceImpl implements UserService {
 	      
 	      payment = (Payment) userDao.store(payment);
 		return payment.getPaymentId();
+	}
+
+	@Override
+	public List<MotorInsurance> getUserInsuranceDetails(int userId) {
+		try {
+			List<MotorInsurance> list = userDao.fetchInsuranceDetailsByUserId(userId);
+			for(MotorInsurance insurance : list) {
+				insurance.getUser().getAddress().setUser(null);
+			}
+			return list;
+		}catch(NoResultException e) {
+			throw new UserServiceException("No User with such User Id");
+		}
 	}
 }
