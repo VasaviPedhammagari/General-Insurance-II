@@ -1,5 +1,5 @@
-package com.lti.dao;
-
+//package com.lti.dao;
+//
 //import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 //
@@ -9,3 +9,4 @@ package com.lti.dao;
 //public interface AdminDashDao extends JpaRepository<User, Integer> {
 //
 //}
+
