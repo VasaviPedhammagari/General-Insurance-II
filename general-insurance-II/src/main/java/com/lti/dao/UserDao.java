@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.lti.dto.RenewDetails;
+import com.lti.entity.InsuranceClaim;
 import com.lti.entity.MotorInsurance;
 
 @Repository
@@ -85,6 +86,13 @@ public class UserDao extends GenericDao {
 		return entityManager
 			   .createQuery("select u.insurances from User u where u.userId = :userId")
 			   .setParameter("userId", userId)
+			   .getResultList();
+	}
+	
+	public List<InsuranceClaim> fetchClaimDetailsByPolicyNumber(int policyNumber){
+		return entityManager
+			   .createQuery("select i from InsuranceClaim i join i.motorInsurance m where m.policyNumber = :policyNumber")
+			   .setParameter("policyNumber", policyNumber)
 			   .getResultList();
 	}
 

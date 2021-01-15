@@ -227,7 +227,21 @@ public class UserServiceImpl implements UserService {
 		}catch(NoResultException e) {
 			throw new UserServiceException("No User with such User Id");
 		}
-	}	
+	}
+	
+	@Override
+	public List<InsuranceClaim> getPolicyClaimDetails(int policyNumber) {
+		try {
+			List<InsuranceClaim> list = userDao.fetchClaimDetailsByPolicyNumber(policyNumber);
+			for(InsuranceClaim insuranceClaim : list) {
+				insuranceClaim.getMotorInsurance().getUser().getAddress().setUser(null);
+			}
+			return list;
+		}catch(NoResultException e) {
+			throw new UserServiceException("No User with such User Id");
+		}
+	}
+	
 	public List<InsuranceClaim> getAllClaims() {
 		return userDao.fetchAll(InsuranceClaim.class);
 	}

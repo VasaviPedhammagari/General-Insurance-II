@@ -1,6 +1,7 @@
 package com.lti.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -57,6 +59,10 @@ public class MotorInsurance {
 	//@OneToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "vehicle_id")
 	private Vehicle vehicle;
+	
+    //@JsonIgnoreProperties(value = {"motorInsurance"},allowSetters = true)
+	//@OneToMany(mappedBy = "motorInsurance",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
+	//private List<InsuranceClaim> insuranceClaim;
 
 	public int getPolicyNumber() {
 		return policyNumber;

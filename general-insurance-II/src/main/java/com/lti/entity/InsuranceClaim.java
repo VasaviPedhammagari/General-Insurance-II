@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "insurance_claim")
 public class InsuranceClaim {
@@ -35,10 +37,11 @@ public class InsuranceClaim {
 	@Column(name = "claim_amount")
 	private double claimAmount;
 	
-	@ManyToOne
+	//@JsonIgnoreProperties(value = {"insuranceClaim"},allowSetters = true)
+	@ManyToOne//(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "policy_no")
 	private MotorInsurance motorInsurance;
-
+	
 	public int getClaimNumber() {
 		return claimNumber;
 	}
