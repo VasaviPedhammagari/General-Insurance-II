@@ -10,9 +10,9 @@ public interface VehicleService {
 
 	public List<Estimate> getPremiumPlans(Vehicle vehicle);
 
+	public Vehicle register(Vehicle vehicle);
+	
 	public VehicleModels addNewVehicle(VehicleModels vehicleModel);
 
-	public Vehicle register(Vehicle vehicle);
-
-
+	public List<VehicleModels> listAvailableVehicle();
 }

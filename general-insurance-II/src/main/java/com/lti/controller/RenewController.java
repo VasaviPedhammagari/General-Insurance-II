@@ -28,7 +28,7 @@ public class RenewController {
 	@PostMapping("/renew")
 	public @ResponseBody InsuranceStatus renew(@RequestBody RenewDetails renewDetails) {
 		try {
-			MotorInsurance motorInsurance = userService.getDetails(renewDetails);
+			MotorInsurance motorInsurance = userService.getRenewDetails(renewDetails);
 
 			if (motorInsurance.getPlanExpiryDate().compareTo(LocalDate.now()) <= 0) {
 				motorInsurance.getUser().getAddress().setUser(null);

@@ -113,4 +113,10 @@ public class VehicleServiceImpl implements VehicleService {
 		return (VehicleModels) vehicleDao.store(vehicleModel);
 	}
 
+	@Override
+	@Transactional
+	public List<VehicleModels> listAvailableVehicle() {		
+		return vehicleDao.fetchAll(VehicleModels.class);
+	}
+
 }
