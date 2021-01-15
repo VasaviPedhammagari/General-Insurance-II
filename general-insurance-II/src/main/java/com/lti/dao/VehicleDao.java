@@ -1,5 +1,9 @@
 package com.lti.dao;
 
+import java.util.List;
+
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import com.lti.entity.VehicleModels;
@@ -17,6 +21,19 @@ public class VehicleDao extends GenericDao {
 
 		return (Long) entityManager.createQuery("select count(v) from Vehicle v where v.regNo = :regNo")
 				.setParameter("regNo", regNo).getSingleResult() == 1 ? true : false;
+	}
+	
+	public boolean isVehicleModelPresent(String manufacturer,String model){
+		
+		return (Long) entityManager.createQuery("select count(v) from VehicleModels v where v.manufacturer = :manufacturer and v.model = :model")
+				.setParameter("manufacturer", manufacturer).setParameter("model", model).getSingleResult() == 1 ? true : false; 
+	}
+	public <A> List<A> fetchAllOrderById(Class<A> cname, int id) {
+		String jpql = "select obj from " + cname.getName() + " as obj order by "+ id ;
+		Query q = entityManager.createQuery(jpql);
+		List<A> list = q.getResultList();
+
+		return list;
 	}
 
 }
