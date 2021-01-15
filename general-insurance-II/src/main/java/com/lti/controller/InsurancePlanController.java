@@ -33,12 +33,16 @@ public class InsurancePlanController {
 			
 			return status;
 		}catch(UserServiceException e) {
+			
             InsuranceStatus status = new InsuranceStatus();
 			
 			status.setStatus(StatusType.FAILED);
 			status.setMessage(e.getMessage());
             
 			return status;
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 }

@@ -48,11 +48,13 @@ public class ClaimController {
 	
 	@GetMapping("/validate")
 	public List<InsuranceClaim> getClaimTable(){
-		return userService.getAllClaims();
+		List<InsuranceClaim> list = userService.getAllClaims();
+		return list;
 	}
 	
 	@PostMapping("/validate-claim")
-	public @ResponseBody ClaimStatus validateClaim(ValidateClaim validateClaim) {
+	public @ResponseBody ClaimStatus validateClaims(@RequestBody ValidateClaim validateClaim) {
+		System.out.println(validateClaim.getClaimNumber()+" "+validateClaim.getClaimAmount());
 		try {
 			userService.validateClaimUpdate(validateClaim);
 			ClaimStatus status = new ClaimStatus();
@@ -61,6 +63,7 @@ public class ClaimController {
 			return status;
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			ClaimStatus status = new ClaimStatus();
 			status.setStatus(StatusType.FAILED);
 			status.setMessage("Validated claim failed");
@@ -70,7 +73,8 @@ public class ClaimController {
 	}
 	
 	@PostMapping("/deny-claim")
-	public @ResponseBody ClaimStatus denyClaim(ValidateClaim validateClaim) {
+	public @ResponseBody ClaimStatus denyClaim(@RequestBody ValidateClaim validateClaim) {
+		System.out.println(validateClaim.getClaimNumber());
 		try {
 			userService.denyClaimUpdate(validateClaim);
 			ClaimStatus status = new ClaimStatus();
@@ -79,6 +83,7 @@ public class ClaimController {
 			return status;
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			ClaimStatus status = new ClaimStatus();
 			status.setStatus(StatusType.FAILED);
 			status.setMessage("Validated claim failed");

@@ -2,8 +2,8 @@ package com.lti.dto;
 
 public class ValidateClaim {
 
+	private double claimAmount;
 	private int claimNumber;
-	private int claimAmount;
 
 	public int getClaimNumber() {
 		return claimNumber;
@@ -13,11 +13,11 @@ public class ValidateClaim {
 		this.claimNumber = claimNumber;
 	}
 
-	public int getClaimAmount() {
+	public double getClaimAmount() {
 		return claimAmount;
 	}
 
-	public void setClaimAmount(int claimAmount) {
+	public void setClaimAmount(double claimAmount) {
 		this.claimAmount = claimAmount;
 	}
 

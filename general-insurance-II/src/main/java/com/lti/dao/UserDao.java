@@ -72,5 +72,11 @@ public class UserDao extends GenericDao {
 		entityManager.createQuery("update InsuranceClaim c set c.claimStatus = :status where c.claimNumber = :number")
 				.setParameter("status", "Denied").setParameter("number", claimNumber).executeUpdate();
 	}
+	
+	public int getPolicyNumber(int claimNumber) {
+		return (Integer) entityManager.createQuery("select m.policyNumber from InsuranceClaim c inner join c.motorInsurance m where c.claimNumber = :number")
+				.setParameter("number", claimNumber)
+				.getSingleResult();
+	}
 
 }
