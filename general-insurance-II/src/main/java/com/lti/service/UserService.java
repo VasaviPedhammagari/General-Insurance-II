@@ -27,6 +27,8 @@ public interface UserService {
     public int savePaymentdetails(Payment payment);
     
     public List<MotorInsurance> getUserInsuranceDetails(int userId);
+    
+    public List<InsuranceClaim> getPolicyClaimDetails(int policyNumber);
 
     public List<InsuranceClaim> getAllClaims();
     
