@@ -3,6 +3,7 @@ package com.lti.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -17,6 +18,15 @@ public class GenericDao {
 	public Object store(Object obj) {
 		Object updatedObj = entityManager.merge(obj);
 		return updatedObj;
+	}
+	
+	public void delete(Object obj) {
+		try{ 
+			entityManager.remove(obj);
+			}
+		catch(NoResultException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public <E> E Fetch(Class<E> cname, Object pk) {

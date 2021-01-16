@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.lti.dao.UserDao;
 import com.lti.dto.RenewDetails;
+import com.lti.dto.ResetPassword;
 import com.lti.dto.ValidateClaim;
 import com.lti.entity.Estimate;
 import com.lti.entity.InsuranceClaim;
@@ -220,6 +221,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
+	public int resetPassword(User user) {
+		if(!userDao.isUserPresent(user.getEmail()))
+			throw new UserServiceException("User Not Found");
+		User updatedPassword = (User) userDao.store(user);
+		return updatedPassword.getUserId();
+	}
+
+
 	public List<MotorInsurance> getUserInsuranceDetails(int userId) {
 		try {
 			List<MotorInsurance> list = userDao.fetchInsuranceDetailsByUserId(userId);
@@ -279,4 +289,5 @@ public class UserServiceImpl implements UserService {
 		InsuranceClaim updatedInsuranceClaim = (InsuranceClaim) userDao.store(insuranceClaim);
 
 	}
+
 }

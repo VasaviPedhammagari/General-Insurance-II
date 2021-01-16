@@ -3,6 +3,7 @@ package com.lti.service;
 import java.util.List;
 
 import com.lti.dto.RenewDetails;
+import com.lti.dto.ResetPassword;
 import com.lti.dto.ValidateClaim;
 import com.lti.entity.InsuranceClaim;
 import com.lti.entity.MotorInsurance;
@@ -25,6 +26,8 @@ public interface UserService {
     public MotorInsurance storeInsuranceDetails(MotorInsurance motorInsurance);
     
     public int savePaymentdetails(Payment payment);
+
+	public int resetPassword(User user);
     
     public List<MotorInsurance> getUserInsuranceDetails(int userId);
     
