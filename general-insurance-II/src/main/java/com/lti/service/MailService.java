@@ -33,7 +33,7 @@ public class MailService {
 		   
 		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 		      protected PasswordAuthentication getPasswordAuthentication() {
-		         return new PasswordAuthentication("insuranceprojectlti@gmail.com", "poiuylkjhgmnbv741852963");
+		         return new PasswordAuthentication("insuranceprojectlti@gmail.com", "xbmvardhjppvwzyj");
 		      }
 		   });
 		   Message msg = new MimeMessage(session);
@@ -69,7 +69,7 @@ public class MailService {
 			   
 			   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			      protected PasswordAuthentication getPasswordAuthentication() {
-			         return new PasswordAuthentication("insuranceprojectlti@gmail.com", "poiuylkjhgmnbv741852963");
+			         return new PasswordAuthentication("insuranceprojectlti@gmail.com", "xbmvardhjppvwzyj");
 			      }
 			   });
 			   Message msg = new MimeMessage(session);
