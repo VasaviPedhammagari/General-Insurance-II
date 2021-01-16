@@ -33,7 +33,7 @@ public class MailService {
 		   
 		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 		      protected PasswordAuthentication getPasswordAuthentication() {
-		         return new PasswordAuthentication("bankgladiatorproject@gmail.com", "foyuvozrpqdcoeag");
+		         return new PasswordAuthentication("insuranceprojectlti@gmail.com", "poiuylkjhgmnbv741852963");
 		      }
 		   });
 		   Message msg = new MimeMessage(session);

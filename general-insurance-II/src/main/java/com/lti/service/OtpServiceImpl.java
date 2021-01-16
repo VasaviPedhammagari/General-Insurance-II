@@ -1,7 +1,5 @@
 package com.lti.service;
 
-import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -19,6 +17,7 @@ import com.lti.dao.OtpDao;
 
 @Service
 public class OtpServiceImpl implements OtpService{
+	
 @Autowired
 OtpDao otpRepo;
 
@@ -64,6 +63,7 @@ public int generateOtp(String emailId) {
 }
 
 @Override
+@Transactional
 public boolean validateOtp(Otp otp) {
 	try {
 	Otp originalOtp=otpRepo.getOtpNumber(otp.getEmailId());
