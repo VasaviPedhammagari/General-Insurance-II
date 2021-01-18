@@ -33,17 +33,11 @@ public class UserDao extends GenericDao {
 
 	}
 
-	public boolean isPolicyPresent(int policyNumber, int userId) {
-		try {
+	public boolean isPolicyPresent(int policyNumber, String email) {
 			return (Long) entityManager.createQuery(
-					"select count(m.policyNumber) from MotorInsurance m join m.user u where u.userId = :userId and m.policyNumber =:policyNumber")
-					.setParameter("userId", userId).setParameter("policyNumber", policyNumber).getSingleResult() == 1
-							? true
-							: false;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return true;
+					"select count(m.policyNumber) from MotorInsurance m join m.user u where u.email = :email and m.policyNumber =:policyNumber")
+					.setParameter("email", email).setParameter("policyNumber", policyNumber).getSingleResult() == 1
+							? true: false;
 	}
 
 	public double findBalanceClaimAmount(int policyNumber) {

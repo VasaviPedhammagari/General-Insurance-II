@@ -17,7 +17,8 @@ public interface UserService {
 
 	public User login(String email, String password);
 	
-	public InsuranceClaim claim(int policyNumber, String email, String password, String claimReason, double claimAmount);
+	public InsuranceClaim claim(int policyNumber, String email, //String password, 
+			String claimReason, double claimAmount);
 	
     public List<VehicleModels> fetchVehicles();
 	
