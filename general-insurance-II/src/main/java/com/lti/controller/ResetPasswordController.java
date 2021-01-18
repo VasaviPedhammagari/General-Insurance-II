@@ -31,8 +31,10 @@ public class ResetPasswordController {
 	
 	@PostMapping("/resetpassword")
 	public @ResponseBody ResetPassword resetPassword(@RequestBody User user) {
+		System.out.println(user.getEmail());
 		try {
 			int id = userService.resetPassword(user);
+			System.out.println(id);
 			ResetPassword status = new ResetPassword();
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Password reset was successful!");

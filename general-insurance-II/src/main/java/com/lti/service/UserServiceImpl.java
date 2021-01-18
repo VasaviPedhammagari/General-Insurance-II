@@ -254,6 +254,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public int resetPassword(User user) {
+		System.out.println("In reset password method"+user.getEmail());
 		if(!userDao.isUserPresent(user.getEmail()))
 			throw new UserServiceException("User Not Found");
 			User user1 = (User) userDao.findByEmail(user.getEmail()); 
