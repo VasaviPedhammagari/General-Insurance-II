@@ -290,4 +290,19 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	@Transactional
+	public void updateUserDetails(User user) {
+		
+		User oldUser = userDao.Fetch(User.class, user.getUserId());
+		
+		oldUser.setAddress(user.getAddress());
+		oldUser.setEmail(user.getEmail());
+		oldUser.setPhoneNo(user.getPhoneNo());
+		oldUser.setDateOfBirth(user.getDateOfBirth());
+		
+		userDao.store(oldUser);
+		
+	}
+
 }

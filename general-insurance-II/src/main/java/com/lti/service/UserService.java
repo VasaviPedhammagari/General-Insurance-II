@@ -38,5 +38,7 @@ public interface UserService {
     public void validateClaimUpdate(ValidateClaim validateClaim);
     
     public void denyClaimUpdate(ValidateClaim validateClaim);
+    
+    public void updateUserDetails(User user);
 
 }
