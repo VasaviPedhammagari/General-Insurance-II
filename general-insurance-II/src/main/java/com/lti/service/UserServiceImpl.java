@@ -2,6 +2,7 @@ package com.lti.service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.lti.dao.UserDao;
 import com.lti.dto.RenewDetails;
 import com.lti.dto.ResetPassword;
+import com.lti.dto.UserInsuranceStatus;
 import com.lti.dto.ValidateClaim;
 import com.lti.entity.Estimate;
 import com.lti.entity.InsuranceClaim;
@@ -53,57 +55,11 @@ public class UserServiceImpl implements UserService {
 			throw new UserServiceException("incorrect password");
 		}
 	}
-	/*
-	 * @Override
-	 * 
-	 * @Transactional public InsuranceClaim claim(int policyNumber, String email,
-	 * String password, String claimReason, double claimAmount) { try { if
-	 * (!userDao.isUserPresent(email)) throw new
-	 * UserServiceException("User not registered"); else {
-	 * System.out.println("Email found"); if (userDao.findByEmailAndPassword(email,
-	 * password)== 0) throw new UserServiceException("Incorrect password"); else {
-	 * System.out.println("Password found"); int userId =
-	 * userDao.findByEmailAndPassword(email, password); System.out.println("hello");
-	 * System.out.println(userId); System.out.println(policyNumber);
-	 * System.out.println(userDao.isPolicyPresent(policyNumber, userId)); if
-	 * (!userDao.isPolicyPresent(policyNumber, userId)) throw new
-	 * UserServiceException("Incorrect policy number");
-	 * 
-	 * else { System.out.println("Policy found");
-	 * 
-	 * if (userDao.findBalanceClaimAmount(policyNumber)>claimAmount) {
-	 * 
-	 * System.out.println(userDao.findBalanceClaimAmount(policyNumber));
-	 * 
-	 * InsuranceClaim insuranceClaim = new InsuranceClaim();
-	 * insuranceClaim.setClaimReason(claimReason);
-	 * insuranceClaim.setClaimDate(LocalDate.now());
-	 * insuranceClaim.setClaimStatus("APPROVED");
-	 * insuranceClaim.setClaimAmount(claimAmount);
-	 * 
-	 * MotorInsurance motorInsurance = userDao.Fetch(MotorInsurance.class,
-	 * policyNumber);
-	 * motorInsurance.setTotalClaimAmount(motorInsurance.getTotalClaimAmount() +
-	 * claimAmount);
-	 * motorInsurance.setBalanceClaimAmount(motorInsurance.getBalanceClaimAmount() -
-	 * claimAmount);
-	 * 
-	 * insuranceClaim.setMotorInsurance(motorInsurance);
-	 * 
-	 * MotorInsurance updatedmotorInsurance = (MotorInsurance)
-	 * userDao.store(motorInsurance); InsuranceClaim updatedInsuranceClaim =
-	 * (InsuranceClaim) userDao.store(insuranceClaim); return updatedInsuranceClaim;
-	 * } else throw new
-	 * UserServiceException("Enough money not available for claim"); } } } }
-	 * catch(NoResultException e) { throw new
-	 * UserServiceException("Enough money not available for claim"); } //return
-	 * null; }
-	 */
-
+/*
 	@Override
 	@Transactional
-	public InsuranceClaim claim(int policyNumber, String email, String password, String claimReason,
-			double claimAmount) {
+	public InsuranceClaim claim(int policyNumber, String email, String password, 
+			String claimReason, double claimAmount) {
 		MotorInsurance motorInsurance1 = userDao.Fetch(MotorInsurance.class, policyNumber);
 		try {
 			if (!userDao.isUserPresent(email))
@@ -148,7 +104,68 @@ public class UserServiceImpl implements UserService {
 			throw new UserServiceException("Incorrect password");
 		}
 	}
+*/
+	
+	@Override
+	@Transactional
+	public InsuranceClaim claim(int policyNumber, String email, //String password, 
+			String claimReason, double claimAmount) {
+		MotorInsurance motorInsurance1 = userDao.Fetch(MotorInsurance.class, policyNumber);
+		try {
+			if (!userDao.isUserPresent(email))
+				throw new UserServiceException("User not registered");
+			else {
+				System.out.println("Email found");
+				//if (userDao.findByEmailAndPassword(email, password) > 0) {
+					//System.out.println("Password found");
+					//int userId = userDao.findByEmailAndPassword(email, password);
+					if (!userDao.isPolicyPresent(policyNumber, email))
+						throw new UserServiceException("Incorrect policy number");
+					else {
+						System.out.println("Policy found");
+						if (motorInsurance1.getPlanType().equals("Third Party Liability") || userDao.findBalanceClaimAmount(policyNumber) > claimAmount) {
 
+							System.out.println(userDao.findBalanceClaimAmount(policyNumber));
+
+							InsuranceClaim insuranceClaim = new InsuranceClaim();
+							insuranceClaim.setClaimReason(claimReason);
+							insuranceClaim.setClaimDate(LocalDate.now());
+							insuranceClaim.setClaimStatus("PENDING");
+							insuranceClaim.setClaimAmount(claimAmount);
+
+							MotorInsurance motorInsurance = userDao.Fetch(MotorInsurance.class, policyNumber);
+							// motorInsurance.setTotalClaimAmount(motorInsurance.getTotalClaimAmount() +
+							// claimAmount);
+							// motorInsurance.setBalanceClaimAmount(motorInsurance.getBalanceClaimAmount() -
+							// claimAmount);
+
+							insuranceClaim.setMotorInsurance(motorInsurance);
+							
+							//change
+							int userId = motorInsurance.getUser().getUserId();
+							System.out.println(userId);
+							User user = userDao.Fetch(User.class, userId);
+							
+							insuranceClaim.setUser(user);
+
+							MotorInsurance updatedMotorInsurance = (MotorInsurance) userDao.store(motorInsurance);
+							User updatedUser = (User) userDao.store(user);
+							InsuranceClaim updatedInsuranceClaim = (InsuranceClaim) userDao.store(insuranceClaim);
+							return updatedInsuranceClaim;
+						} else
+							throw new UserServiceException("Enough money not available for claim");
+					}
+			}
+				//} else
+					//throw new UserServiceException("Incorrect password");
+			//}
+		} //catch (EmptyResultDataAccessException e) {
+			//throw new UserServiceException("Incorrect password");
+		catch(NullPointerException e) {
+			throw new UserServiceException("Enough money not available for claim");
+		}
+	}
+	
 	@Override
 	public List<VehicleModels> fetchVehicles() {
 		List<VehicleModels> models = userDao.fetchAll(VehicleModels.class);
@@ -172,7 +189,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public MotorInsurance storeInsuranceDetails(MotorInsurance motorInsurance) {
+	public Payment storeInsuranceDetails(MotorInsurance motorInsurance) {
 		try {
 			motorInsurance.setPlanStartDate(LocalDate.now());
 			// motorInsurance.setPlanStartDate(LocalDate.of(2019,01,01));
@@ -202,7 +219,16 @@ public class UserServiceImpl implements UserService {
 			System.out.println(motorInsurance.getUser().getUserId());
 			motorInsurance = (MotorInsurance) userDao.store(motorInsurance);
 			System.out.println(motorInsurance.getInsurancePremium());
-			return motorInsurance;
+			
+			Payment payment = new Payment();
+			payment.setInsurancePrice((int)motorInsurance.getInsurancePremium());
+			payment.setMotorInsurance(motorInsurance);
+			payment.setInsuranceStatus("Not Active");
+			payment.setPaymentStatus("Pending");
+			payment.setPaymentDate(LocalDate.now());
+
+			payment = (Payment) userDao.store(payment);
+			return payment;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new UserServiceException(e.getMessage());
@@ -212,6 +238,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public int savePaymentdetails(Payment payment) {
+		MotorInsurance motorInsurance = payment.getMotorInsurance();
+		motorInsurance.setPlanStartDate(LocalDate.now());
+		motorInsurance.setPlanExpiryDate(LocalDate.now().plusYears(motorInsurance.getNoOfYrs()));
+		payment.setMotorInsurance(motorInsurance);
 		payment.setInsuranceStatus("Active");
 		payment.setPaymentStatus("Paid");
 		payment.setPaymentDate(LocalDate.now());
@@ -289,6 +319,63 @@ public class UserServiceImpl implements UserService {
 
 		InsuranceClaim updatedInsuranceClaim = (InsuranceClaim) userDao.store(insuranceClaim);
 
+	}
+
+	@Override
+	@Transactional
+	public void updateUserDetails(User user) {
+		
+		User oldUser = userDao.Fetch(User.class, user.getUserId());
+		
+		oldUser.setAddress(user.getAddress());
+		oldUser.setEmail(user.getEmail());
+		oldUser.setPhoneNo(user.getPhoneNo());
+		oldUser.setDateOfBirth(user.getDateOfBirth());
+		
+		userDao.store(oldUser);
+		
+	}
+
+	@Override
+	public UserInsuranceStatus getVehiclesByUserId(int userId) {
+		try {
+			List<Vehicle> list = userDao.fetchVehiclesByUserId(userId);
+			List<Vehicle> vehicles = new ArrayList<Vehicle>();
+			List<Payment> payments = new ArrayList<Payment>();
+			List<MotorInsurance> motorInsurances = new ArrayList<MotorInsurance>();
+			System.out.println(vehicles.size());
+			UserInsuranceStatus status = new UserInsuranceStatus();
+			for(Vehicle vehicle : list) {
+				System.out.println(vehicle.getInsurances());
+				if(vehicle.getInsurances().size() == 0)
+					vehicles.add(vehicle);
+				else {
+					List<MotorInsurance> insurances = vehicle.getInsurances();
+					for(MotorInsurance insurance: insurances) {
+						Payment payment = userDao.fetchPaymentDetailsByPolicyNumber(insurance.getPolicyNumber());
+						if(payment.getPaymentStatus().equals("Pending")) {
+							insurance.getUser().getAddress().setUser(null);
+							payment.getMotorInsurance().getUser().getAddress().setUser(null);
+							payments.add(payment);
+							motorInsurances.add(insurance);
+						}		
+					}
+				}
+			}
+			status.setVehicles(vehicles);
+			status.setInsurances(motorInsurances);
+			status.setPayments(payments);
+			
+			return status;
+		}catch(NoResultException e) {
+			e.printStackTrace();
+		    throw new UserServiceException("No vehicle is registered");
+		}
+	}
+	
+	@Override
+	public User getUserDetails(int userId) {
+		return userDao.Fetch(User.class, userId);
 	}
 
 }

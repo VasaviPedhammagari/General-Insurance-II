@@ -99,5 +99,19 @@ public class UserDao extends GenericDao {
 	public Object findByEmail(String email) {
 		return entityManager.createQuery("select u from User u where u.email = :email").setParameter("email", email).getSingleResult();
 	}
+	
+	public List<Vehicle> fetchVehiclesByUserId(int userId){
+		return entityManager
+				.createQuery("select v from Vehicle v join v.user u where u.userId = :userId")
+				.setParameter("userId", userId)
+				.getResultList();
+	}
+
+	public Payment fetchPaymentDetailsByPolicyNumber(int policyNumber) {
+		return (Payment) entityManager
+				.createQuery("select p from Payment p join p.motorInsurance m where m.policyNumber = :policyNumber")
+				.setParameter("policyNumber", policyNumber)
+				.getSingleResult();
+	}
 
 }
