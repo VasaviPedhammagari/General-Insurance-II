@@ -320,4 +320,9 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+	@Override
+	public User getUserDetails(int userId) {
+		return userDao.Fetch(User.class, userId);
+	}
+
 }
