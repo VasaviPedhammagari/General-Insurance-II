@@ -2,6 +2,7 @@ package com.lti.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import com.lti.exception.VehicleModelServiceException;
 import com.lti.service.UserService;
 
 @RestController
+@CrossOrigin
 public class ResetPasswordController {
 
 	@Autowired
@@ -46,12 +48,12 @@ public class ResetPasswordController {
 		}
 	}
 	
-	@PatchMapping("/resetpassword/{userId}")
-	public ResponseEntity<Void> resetPassword(@PathVariable int userId, @RequestBody User user)
-	//public String restUserPassword(@RequestBody User user)
-	{
-		resetPassword(userId, user);
-		//resetPasswordDao.save(user);
-		return ResponseEntity.ok().build();
-	}
+//	@PatchMapping("/resetpassword/{userId}")
+//	public ResponseEntity<Void> resetPassword(@PathVariable int userId, @RequestBody User user)
+//	//public String restUserPassword(@RequestBody User user)
+//	{
+//		resetPassword(userId, user);
+//		//resetPasswordDao.save(user);
+//		return ResponseEntity.ok().build();
+//	}
 }

@@ -95,5 +95,9 @@ public class UserDao extends GenericDao {
 			   .setParameter("policyNumber", policyNumber)
 			   .getResultList();
 	}
+	
+	public Object findByEmail(String email) {
+		return entityManager.createQuery("select u from User u where u.email = :email").setParameter("email", email).getSingleResult();
+	}
 
 }

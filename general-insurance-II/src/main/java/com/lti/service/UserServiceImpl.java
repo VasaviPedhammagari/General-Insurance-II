@@ -225,10 +225,11 @@ public class UserServiceImpl implements UserService {
 	public int resetPassword(User user) {
 		if(!userDao.isUserPresent(user.getEmail()))
 			throw new UserServiceException("User Not Found");
-		User updatedPassword = (User) userDao.store(user);
+			User user1 = (User) userDao.findByEmail(user.getEmail()); 
+			user1.setPassword(user.getPassword());
+		User updatedPassword = (User) userDao.store(user1);
 		return updatedPassword.getUserId();
 	}
-
 
 	public List<MotorInsurance> getUserInsuranceDetails(int userId) {
 		try {
