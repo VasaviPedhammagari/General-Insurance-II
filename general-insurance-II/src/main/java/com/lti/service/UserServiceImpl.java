@@ -2,6 +2,7 @@ package com.lti.service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.lti.dao.UserDao;
 import com.lti.dto.RenewDetails;
 import com.lti.dto.ResetPassword;
+import com.lti.dto.UserInsuranceStatus;
 import com.lti.dto.ValidateClaim;
 import com.lti.entity.Estimate;
 import com.lti.entity.InsuranceClaim;
@@ -172,7 +174,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public MotorInsurance storeInsuranceDetails(MotorInsurance motorInsurance) {
+	public Payment storeInsuranceDetails(MotorInsurance motorInsurance) {
 		try {
 			motorInsurance.setPlanStartDate(LocalDate.now());
 			// motorInsurance.setPlanStartDate(LocalDate.of(2019,01,01));
@@ -202,7 +204,16 @@ public class UserServiceImpl implements UserService {
 			System.out.println(motorInsurance.getUser().getUserId());
 			motorInsurance = (MotorInsurance) userDao.store(motorInsurance);
 			System.out.println(motorInsurance.getInsurancePremium());
-			return motorInsurance;
+			
+			Payment payment = new Payment();
+			payment.setInsurancePrice((int)motorInsurance.getInsurancePremium());
+			payment.setMotorInsurance(motorInsurance);
+			payment.setInsuranceStatus("Not Active");
+			payment.setPaymentStatus("Pending");
+			payment.setPaymentDate(LocalDate.now());
+
+			payment = (Payment) userDao.store(payment);
+			return payment;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new UserServiceException(e.getMessage());
@@ -212,6 +223,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public int savePaymentdetails(Payment payment) {
+		MotorInsurance motorInsurance = payment.getMotorInsurance();
+		motorInsurance.setPlanStartDate(LocalDate.now());
+		motorInsurance.setPlanExpiryDate(LocalDate.now().plusYears(motorInsurance.getNoOfYrs()));
+		payment.setMotorInsurance(motorInsurance);
 		payment.setInsuranceStatus("Active");
 		payment.setPaymentStatus("Paid");
 		payment.setPaymentDate(LocalDate.now());
@@ -303,6 +318,43 @@ public class UserServiceImpl implements UserService {
 		
 		userDao.store(oldUser);
 		
+	}
+
+	@Override
+	public UserInsuranceStatus getVehiclesByUserId(int userId) {
+		try {
+			List<Vehicle> list = userDao.fetchVehiclesByUserId(userId);
+			List<Vehicle> vehicles = new ArrayList<Vehicle>();
+			List<Payment> payments = new ArrayList<Payment>();
+			List<MotorInsurance> motorInsurances = new ArrayList<MotorInsurance>();
+			System.out.println(vehicles.size());
+			UserInsuranceStatus status = new UserInsuranceStatus();
+			for(Vehicle vehicle : list) {
+				System.out.println(vehicle.getInsurances());
+				if(vehicle.getInsurances().size() == 0)
+					vehicles.add(vehicle);
+				else {
+					List<MotorInsurance> insurances = vehicle.getInsurances();
+					for(MotorInsurance insurance: insurances) {
+						Payment payment = userDao.fetchPaymentDetailsByPolicyNumber(insurance.getPolicyNumber());
+						if(payment.getPaymentStatus().equals("Pending")) {
+							insurance.getUser().getAddress().setUser(null);
+							payment.getMotorInsurance().getUser().getAddress().setUser(null);
+							payments.add(payment);
+							motorInsurances.add(insurance);
+						}		
+					}
+				}
+			}
+			status.setVehicles(vehicles);
+			status.setInsurances(motorInsurances);
+			status.setPayments(payments);
+			
+			return status;
+		}catch(NoResultException e) {
+			e.printStackTrace();
+		    throw new UserServiceException("No vehicle is registered");
+		}
 	}
 
 }

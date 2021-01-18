@@ -52,6 +52,7 @@ public class User {
     @JsonIgnoreProperties(value = {"user"},allowSetters = true)
 	@OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
 	private List<MotorInsurance> insurances;
+    
 	
 	public int getUserId() {
 		return userId;

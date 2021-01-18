@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.lti.dto.RenewDetails;
 import com.lti.dto.ResetPassword;
+import com.lti.dto.UserInsuranceStatus;
 import com.lti.dto.ValidateClaim;
 import com.lti.entity.InsuranceClaim;
 import com.lti.entity.MotorInsurance;
 import com.lti.entity.Payment;
 import com.lti.entity.User;
+import com.lti.entity.Vehicle;
 import com.lti.entity.VehicleModels;
 
 public interface UserService {
@@ -23,7 +25,7 @@ public interface UserService {
 	
     public MotorInsurance getRenewDetails(RenewDetails renewDetails);
 
-    public MotorInsurance storeInsuranceDetails(MotorInsurance motorInsurance);
+    public Payment storeInsuranceDetails(MotorInsurance motorInsurance);
     
     public int savePaymentdetails(Payment payment);
 
@@ -40,5 +42,7 @@ public interface UserService {
     public void denyClaimUpdate(ValidateClaim validateClaim);
     
     public void updateUserDetails(User user);
+    
+    public UserInsuranceStatus getVehiclesByUserId(int userId);
 
 }
