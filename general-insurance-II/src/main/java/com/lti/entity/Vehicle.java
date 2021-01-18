@@ -45,7 +45,7 @@ public class Vehicle {
 	private String vehicleType;
 	
 	@JsonIgnoreProperties(value = {"vehicle"},allowSetters = true)
-    @OneToMany(mappedBy = "vehicle",cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "vehicle",cascade = { CascadeType.PERSIST,CascadeType.REMOVE })
 	private List<MotorInsurance> insurances;
 	
 	public List<MotorInsurance> getInsurances() {
