@@ -27,7 +27,7 @@ public class ClaimController {
 	@PostMapping("/claim")
 	public @ResponseBody ClaimStatus claim(@RequestBody Claim claim) {
 		try {
-			InsuranceClaim insuranceClaim = userService.claim(claim.getPolicyNumber(), claim.getEmail(), claim.getPassword(), 
+			InsuranceClaim insuranceClaim = userService.claim(claim.getPolicyNumber(), claim.getEmail(), //claim.getPassword(), 
 					claim.getClaimReason(), claim.getClaimAmount());
 			//MotorInsurance motorInsurance = insuranceClaim.getMotorInsurance();
 			ClaimStatus status = new ClaimStatus();

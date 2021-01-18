@@ -24,9 +24,12 @@ public class VehicleController {
 	@PostMapping("/register-vehicle")
 	public @ResponseBody VehicleStatus register(@RequestBody Vehicle vehicle) {
 		try {
+			 //System.out.println(vehicle.getUser().getUserId());
 			//System.out.println(vehicle.getRegNo()+" "+vehicle.getManufacturer()+" "+vehicle.getEngineNumber());
 			vehicle = vehicleService.register(vehicle);
 			//System.out.println("called!");
+			vehicle.setInsurances(null);
+			//vehicle.getUser().setInsurances(null);
 			VehicleStatus status = new VehicleStatus();
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Registration Successfull");

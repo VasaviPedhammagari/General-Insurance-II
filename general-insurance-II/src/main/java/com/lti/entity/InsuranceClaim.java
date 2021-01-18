@@ -42,6 +42,10 @@ public class InsuranceClaim {
 	@JoinColumn(name = "policy_no")
 	private MotorInsurance motorInsurance;
 	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+	
 	public int getClaimNumber() {
 		return claimNumber;
 	}
@@ -88,5 +92,13 @@ public class InsuranceClaim {
 
 	public void setMotorInsurance(MotorInsurance motorInsurance) {
 		this.motorInsurance = motorInsurance;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

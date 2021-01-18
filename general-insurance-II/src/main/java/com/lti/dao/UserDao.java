@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.lti.dto.RenewDetails;
 import com.lti.entity.InsuranceClaim;
 import com.lti.entity.MotorInsurance;
+import com.lti.entity.Payment;
+import com.lti.entity.Vehicle;
 
 @Repository
 public class UserDao extends GenericDao {
@@ -33,11 +35,11 @@ public class UserDao extends GenericDao {
 
 	}
 
-	public boolean isPolicyPresent(int policyNumber, int userId) {
+	public boolean isPolicyPresent(int policyNumber, String email) {
 		try {
 			return (Long) entityManager.createQuery(
-					"select count(m.policyNumber) from MotorInsurance m join m.user u where u.userId = :userId and m.policyNumber =:policyNumber")
-					.setParameter("userId", userId).setParameter("policyNumber", policyNumber).getSingleResult() == 1
+					"select count(m.policyNumber) from MotorInsurance m join m.user u where u.email = :email and m.policyNumber =:policyNumber")
+					.setParameter("email", email).setParameter("policyNumber", policyNumber).getSingleResult() == 1
 							? true
 							: false;
 		} catch (Exception e) {
@@ -94,6 +96,25 @@ public class UserDao extends GenericDao {
 			   .createQuery("select i from InsuranceClaim i join i.motorInsurance m where m.policyNumber = :policyNumber")
 			   .setParameter("policyNumber", policyNumber)
 			   .getResultList();
+	}
+	
+	public Object findByEmail(String email) {
+		return entityManager.createQuery("select u from User u where u.email = :email").setParameter("email", email).getSingleResult();
+	}
+	
+	public List<Vehicle> fetchVehiclesByUserId(int userId){
+		return entityManager
+				.createQuery("select v from Vehicle v join v.user u where u.userId = :userId")
+				.setParameter("userId", userId)
+				.getResultList();
+	}
+
+	public Payment fetchPaymentDetailsByPolicyNumber(int policyNumber) {
+		return (Payment) entityManager
+				.createQuery("select p from Payment p join p.motorInsurance m where m.policyNumber = :policyNumber order by m.planExpiryDate desc")
+				.setParameter("policyNumber", policyNumber)
+				.setMaxResults(1)
+				.getSingleResult();
 	}
 
 }

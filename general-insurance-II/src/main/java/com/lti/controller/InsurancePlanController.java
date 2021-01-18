@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lti.dto.InsuranceStatus;
 import com.lti.dto.Status.StatusType;
 import com.lti.entity.MotorInsurance;
+import com.lti.entity.Payment;
 import com.lti.exception.UserServiceException;
 import com.lti.service.UserService;
 
@@ -24,12 +25,12 @@ public class InsurancePlanController {
 	@PostMapping("/choose-plan")
 	public @ResponseBody InsuranceStatus choosePlan(@RequestBody MotorInsurance motorInsurance) {
 		try {
-			motorInsurance = userService.storeInsuranceDetails(motorInsurance);
+			Payment payment = userService.storeInsuranceDetails(motorInsurance);
 			InsuranceStatus status = new InsuranceStatus();
 			
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("success");
-			status.setMotorInsurance(motorInsurance);
+			status.setPayment(payment);
 			
 			return status;
 		}catch(UserServiceException e) {

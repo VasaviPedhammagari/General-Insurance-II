@@ -9,13 +9,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -48,6 +51,17 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle",cascade = { CascadeType.PERSIST,CascadeType.REMOVE })
 	private List<MotorInsurance> insurances;
 	
+	@ManyToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
+	@JsonIgnoreProperties(value = {"vehicles","insurances"},allowSetters = true)
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public List<MotorInsurance> getInsurances() {
 		return insurances;
 	}
@@ -103,8 +117,5 @@ public class Vehicle {
 	public void setVehicleType(String vehicleType) {
 		this.vehicleType = vehicleType;
 	}
-	
-	
-	
 	
 }

@@ -54,6 +54,7 @@ public class LoginController {
 		try {
 			User user = userService.getUserDetails(userId);
 			user.getAddress().setUser(null);
+			user.setInsurances(null);
 			return user;
 		}catch(UserServiceException e) {
 			e.printStackTrace();
