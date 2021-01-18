@@ -8,26 +8,27 @@ import com.lti.entity.Vehicle;
 
 public class UserInsuranceStatus extends Status{
 
-	private List<Vehicle> vehicles;
-	private List<MotorInsurance> insurances;
-	private List<Payment> payments;
+	private Vehicle vehicle;
+	private MotorInsurance motorInsurance;
+	private Payment payment;
+
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
+	public MotorInsurance getMotorInsurance() {
+		return motorInsurance;
+	}
+	public void setMotorInsurance(MotorInsurance motorInsurance) {
+		this.motorInsurance = motorInsurance;
+	}
+	public Payment getPayment() {
+		return payment;
+	}
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
 	
-	public List<Vehicle> getVehicles() {
-		return vehicles;
-	}
-	public void setVehicles(List<Vehicle> vehicles) {
-		this.vehicles = vehicles;
-	}
-	public List<MotorInsurance> getInsurances() {
-		return insurances;
-	}
-	public void setInsurances(List<MotorInsurance> insurances) {
-		this.insurances = insurances;
-	}
-	public List<Payment> getPayments() {
-		return payments;
-	}
-	public void setPayments(List<Payment> payments) {
-		this.payments = payments;
-	}
 }

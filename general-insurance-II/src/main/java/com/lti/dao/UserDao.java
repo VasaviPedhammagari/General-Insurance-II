@@ -101,8 +101,9 @@ public class UserDao extends GenericDao {
 
 	public Payment fetchPaymentDetailsByPolicyNumber(int policyNumber) {
 		return (Payment) entityManager
-				.createQuery("select p from Payment p join p.motorInsurance m where m.policyNumber = :policyNumber")
+				.createQuery("select p from Payment p join p.motorInsurance m where m.policyNumber = :policyNumber order by m.planExpiryDate desc")
 				.setParameter("policyNumber", policyNumber)
+				.setMaxResults(1)
 				.getSingleResult();
 	}
 

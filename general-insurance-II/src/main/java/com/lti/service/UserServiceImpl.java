@@ -217,6 +217,7 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 			System.out.println(motorInsurance.getUser().getUserId());
+			motorInsurance.getVehicle().setUser(null);
 			motorInsurance = (MotorInsurance) userDao.store(motorInsurance);
 			System.out.println(motorInsurance.getInsurancePremium());
 			
@@ -339,31 +340,35 @@ public class UserServiceImpl implements UserService {
 	public UserInsuranceStatus getVehiclesByUserId(int userId) {
 		try {
 			List<Vehicle> list = userDao.fetchVehiclesByUserId(userId);
-			List<Vehicle> vehicles = new ArrayList<Vehicle>();
-			List<Payment> payments = new ArrayList<Payment>();
-			List<MotorInsurance> motorInsurances = new ArrayList<MotorInsurance>();
-			System.out.println(vehicles.size());
+//			List<Vehicle> vehicles = new ArrayList<Vehicle>();
+//			List<Payment> payments = new ArrayList<Payment>();
+//			List<MotorInsurance> motorInsurances = new ArrayList<MotorInsurance>();
+//			System.out.println(vehicles.size());
 			UserInsuranceStatus status = new UserInsuranceStatus();
 			for(Vehicle vehicle : list) {
 				System.out.println(vehicle.getInsurances());
 				if(vehicle.getInsurances().size() == 0)
-					vehicles.add(vehicle);
+					  status.setVehicle(vehicle);
 				else {
 					List<MotorInsurance> insurances = vehicle.getInsurances();
 					for(MotorInsurance insurance: insurances) {
 						Payment payment = userDao.fetchPaymentDetailsByPolicyNumber(insurance.getPolicyNumber());
 						if(payment.getPaymentStatus().equals("Pending")) {
 							insurance.getUser().getAddress().setUser(null);
-							payment.getMotorInsurance().getUser().getAddress().setUser(null);
-							payments.add(payment);
-							motorInsurances.add(insurance);
+							insurance.getVehicle().setInsurances(null);
+							//payment.setMotorInsurance(null);
+				            payment.getMotorInsurance().setUser(null);
+				           // payment.getMotorInsurance().setVehicle(null);
+							//payment.getMotorInsurance().getUser().getAddress().setUser(null);
+							status.setMotorInsurance(insurance);
+							status.setPayment(payment);
 						}		
 					}
 				}
 			}
-			status.setVehicles(vehicles);
-			status.setInsurances(motorInsurances);
-			status.setPayments(payments);
+//			status.setVehicles(vehicles);
+//			status.setInsurances(motorInsurances);
+//			status.setPayments(payments);
 			
 			return status;
 		}catch(NoResultException e) {

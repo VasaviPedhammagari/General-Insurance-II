@@ -27,7 +27,9 @@ public class LoginProfileController {
 	@GetMapping("/insurancedetails")
 	public @ResponseBody List<MotorInsurance> insuranceDetails(@RequestParam int userId) {
 		try {
+			System.out.println("hello"+userId);
 			List<MotorInsurance> list = userService.getUserInsuranceDetails(userId);
+			
 			return list;
 		} catch (UserServiceException e) {
 			e.printStackTrace();
@@ -50,17 +52,17 @@ public class LoginProfileController {
 	public @ResponseBody UserInsuranceStatus vehicleDetails(@RequestParam int userId) {
 		try {
 			UserInsuranceStatus status = userService.getVehiclesByUserId(userId);
-			if(status.getVehicles().size() == 0 && status.getInsurances().size() == 0) {
+			if(status.getVehicle() == null && status.getMotorInsurance() == null) {
 				status.setStatus(StatusType.SUCCESS);
 				status.setMessage("No pending in registration process");
 				
 				return status;
-			}else if(status.getPayments().size() == 0) {
+			}else if(status.getPayment() == null) {
 				status.setStatus(StatusType.SUCCESS);
 				status.setMessage("only vehicle registraion is done");
 				
 				return status;
-			}else if(status.getVehicles().size() == 0){
+			}else if(status.getVehicle() == null){
 				status.setStatus(StatusType.SUCCESS);
 				status.setMessage("payment is pending");
 				

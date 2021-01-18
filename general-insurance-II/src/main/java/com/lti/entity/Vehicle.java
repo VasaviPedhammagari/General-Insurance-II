@@ -52,7 +52,7 @@ public class Vehicle {
 	private List<MotorInsurance> insurances;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE })
-	@JsonIgnore
+	@JsonIgnoreProperties(value = {"vehicles","insurances"},allowSetters = true)
 	@JoinColumn(name = "user_id")
 	private User user;
 	
