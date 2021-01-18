@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.lti.dto.RenewDetails;
 import com.lti.entity.InsuranceClaim;
 import com.lti.entity.MotorInsurance;
+import com.lti.entity.Payment;
+import com.lti.entity.Vehicle;
 
 @Repository
 public class UserDao extends GenericDao {
@@ -33,11 +35,11 @@ public class UserDao extends GenericDao {
 
 	}
 
-	public boolean isPolicyPresent(int policyNumber, int userId) {
+	public boolean isPolicyPresent(int policyNumber, String email) {
 		try {
 			return (Long) entityManager.createQuery(
-					"select count(m.policyNumber) from MotorInsurance m join m.user u where u.userId = :userId and m.policyNumber =:policyNumber")
-					.setParameter("userId", userId).setParameter("policyNumber", policyNumber).getSingleResult() == 1
+					"select count(m.policyNumber) from MotorInsurance m join m.user u where u.email = :email and m.policyNumber =:policyNumber")
+					.setParameter("email", email).setParameter("policyNumber", policyNumber).getSingleResult() == 1
 							? true
 							: false;
 		} catch (Exception e) {
