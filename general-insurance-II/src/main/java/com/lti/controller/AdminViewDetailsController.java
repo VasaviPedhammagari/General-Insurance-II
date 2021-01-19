@@ -21,6 +21,12 @@ public class AdminViewDetailsController {
 	@GetMapping(path="/userdetails")
 	public @ResponseBody List<User> getUserDetails()
 	{
-		return adminViewDetailsDao.findAll();
+		List<User> list = adminViewDetailsDao.findAll();
+		for(User user: list) {
+			user.setAddress(null);
+			user.setVehicles(null);
+			user.setInsurances(null);
+		}
+		return list;
 	}
 }

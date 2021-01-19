@@ -54,7 +54,7 @@ public class User {
 	private List<MotorInsurance> insurances;
     
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-    @JsonIgnoreProperties(value = {"user","insurances",},allowSetters = true)
+    @JsonIgnoreProperties(value = {"user","insurances"},allowSetters = true)
 	private List<Vehicle> vehicles;
     
 	public List<Vehicle> getVehicles() {
