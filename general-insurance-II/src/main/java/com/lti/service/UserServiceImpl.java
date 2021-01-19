@@ -45,14 +45,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User login(String email, String password) {
+		System.out.println("in service email:"+email);
 		try {
 			if (!userDao.isUserPresent(email))
 				throw new UserServiceException("User not registered");
 			int id = userDao.findByEmailAndPassword(email, password);
 			User user = userDao.Fetch(User.class, id);
 			return user;
-		} catch (NoResultException e) {
+		}catch(NoResultException e) {
 			throw new UserServiceException("incorrect password");
+		} 
+		catch (UserServiceException e) {
+			throw new UserServiceException("Password or email is wrong!");
 		}
 	}
 /*

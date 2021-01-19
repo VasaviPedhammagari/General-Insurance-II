@@ -2,6 +2,8 @@ package com.lti.dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.stereotype.Repository;
 
 import com.lti.dto.RenewDetails;
@@ -9,6 +11,7 @@ import com.lti.entity.InsuranceClaim;
 import com.lti.entity.MotorInsurance;
 import com.lti.entity.Payment;
 import com.lti.entity.Vehicle;
+import com.lti.exception.UserServiceException;
 
 @Repository
 public class UserDao extends GenericDao {
@@ -20,9 +23,14 @@ public class UserDao extends GenericDao {
 	}
 
 	public int findByEmailAndPassword(String email, String password) {
-		return (Integer) entityManager
-				.createQuery("select u.userId from User u where u.email = :email and u.password = :password")
-				.setParameter("email", email).setParameter("password", password).getSingleResult();
+		try {
+			return (Integer) entityManager
+					.createQuery("select u.userId from User u where u.email = :email and u.password = :password")
+					.setParameter("email", email).setParameter("password", password).getSingleResult();
+		}catch(NoResultException e) {
+			throw new UserServiceException("incorrect password");
+		} 
+		
 	}
 
 	public MotorInsurance getInsuranceDetails(RenewDetails renewDetails) {
