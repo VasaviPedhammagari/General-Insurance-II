@@ -71,13 +71,13 @@ public class VehicleServiceImpl implements VehicleService {
 		Estimate e2 = new Estimate();
 		e2.setCoverage(depriciatedValue);
 		e2.setNoOfYears(2);
-		e2.setPrice(insurancePrice * 2 - 1300);
+		e2.setPrice(insurancePrice * 2 - (0.1*insurancePrice));
 		e2.setType("Comprehensive");
 
 		Estimate e3 = new Estimate();
 		e3.setCoverage(depriciatedValue);
 		e3.setNoOfYears(3);
-		e3.setPrice(insurancePrice * 3 - 3000);
+		e3.setPrice(insurancePrice * 3 - (0.2*insurancePrice));
 		e3.setType("Comprehensive");
 
 		Estimate e4 = new Estimate();
@@ -97,10 +97,22 @@ public class VehicleServiceImpl implements VehicleService {
 			e4.setPrice(1530);
 			e4.setType("Third Party Liability");
 		}
+		
+		Estimate e5 = new Estimate();
+		e5.setNoOfYears(2);
+		e5.setPrice(e4.getPrice()*2);
+		e5.setType("Third Party Liability");
+		
+		Estimate e6 = new Estimate();
+		e6.setNoOfYears(3);
+		e6.setPrice(e4.getPrice()*3);
+		e6.setType("Third Party Liability");
 		estimates.add(e1);
 		estimates.add(e2);
 		estimates.add(e3);
 		estimates.add(e4);
+		estimates.add(e5);
+		estimates.add(e6);
 		return estimates;
 
 	}
